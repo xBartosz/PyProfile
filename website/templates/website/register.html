@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <form method="post">
+        {%csrf_token%}
+            {{form.as_p}}
+        <input type="submit" value="Register">
+    </form>
+    Click <a href="{%url 'login'%}">here</a> to login!
+</head>
+<body>
+
+</body>
+</html>

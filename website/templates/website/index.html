@@ -1,0 +1,17 @@
+{% load unicorn %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% unicorn_scripts %}
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <a href="{%url 'logout'%}">Logout</a>
+
+
+</head>
+<body>
+{% csrf_token %}
+{% unicorn 'posts' %}
+
+</body>
+</html>
