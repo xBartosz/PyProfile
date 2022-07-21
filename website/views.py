@@ -7,7 +7,12 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from .forms import UserRegisterForm, PostForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from .models import Post
+from django.contrib.auth.models import User
+
+from django.contrib import messages
+
 
 class RegisterFunction(FormView):
     template_name = 'website/register.html'
@@ -31,6 +36,41 @@ class LoginFunction(LoginView):
     template_name = 'website/login.html'
     redirect_authenticated_user = True
     next_page = 'index'
+
+# def authenticate_user(email, password):
+#     try:
+#         user = User.objects.get(email=email)
+#     except User.DoesNotExist:
+#         return None
+#     else:
+#         if user.check_password(password):
+#             return user
+#
+#     return None
+#
+# class LoginFunction(FormView):
+#     template_name = 'website/login.html'
+#
+#     def get(self, request):
+#         return render(request, self.template_name)
+#
+#     def post(self, request):
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+#         user = authenticate_user(email, password)
+#
+#         if user is not None:
+#             if user.is_active:
+#                 login(request, user)
+#
+#                 return redirect(self.request.GET.get('next', '/'))
+#             else:
+#                 messages.success(self.request, "user is not active")
+#                 return redirect(self.request.GET.get('next', '/'))
+#         else:
+#             messages.success(self.request, "email or password not correct")
+#             return redirect(self.request.GET.get('next', '/'))
+
 
 @login_required(login_url='login')
 def index(request):

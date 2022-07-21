@@ -1,17 +1,17 @@
 from django_unicorn.components import UnicornView
-from ..models import Post
-from django.contrib.auth.models import User
+from ..models import Post, MyUser
+# from django.contrib.auth.models import User
 from django.contrib import messages
 
 
 class PostsView(UnicornView):
-    author: User = None
+    author: MyUser = None
     posts: Post = None
     content: str = ""
 
 
     def mount(self):
-        self.author = User.objects.get(username=self.request.user)
+        self.author = MyUser.objects.get(email=self.request.user)
         self.posts = Post.objects.all()
         return super().mount()
 
