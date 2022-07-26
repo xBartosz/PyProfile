@@ -1,26 +1,30 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>profile</title>
-    <a href="{% url 'index' %}">Strona główna</a>
+    <title>{{profiles.first_name}}{{profiles.last_name}}- Profile</title>
 
+    {%include 'website/navbar.html' %}
 </head>
 <body>
+<a href="{% url 'allusers' %}">Move Back</a>
+<br>
 
-    {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-        {% endif %}
+    {{profiles.first_name}}
+    {{profiles.last_name}}
+    <img src="{{profiles.profile_picture.url}}">
 
-    <form method="post" enctype="multipart/form-data">
-        {%csrf_token%}
-        {{p_form}}
-        <br/>
-        <button type="submit">Zapisz</button>
-    </form>
+
+
+<br>
+
+{% for post in user_posts %}
+    {{post.post_content}}
+    {{post.post_date}}
+    {{post.author.first_name}}
+    {{post.author.last_name}}
+    <img class="small_profile_picture" src="{{post.author.profile.profile_picture.url}}" alt="{{post.author.first_name}} {{post.author.last_name}} profile's image">
+{% endfor %}
 </body>
 </html>

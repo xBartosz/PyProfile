@@ -1,12 +1,28 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css'%}">
     <form method="post">
+        <div id="Log_in_div">
         {%csrf_token%}
-            {{form.as_p}}
-        <input type="submit" value="Register">
+            Email: <div class='my-email-class'>{{form.email}}</div> <br>
+            First name:<div class='my-firstname-class'>{{form.first_name}}</div> <br>
+            Last name: <div class='my-lastname-class'>{{form.last_name}}</div> <br>
+            Mobile: <div class='my-mobile-class'>{{form.mobile}}</div> <br>
+            Password: <div class='my-password1-class'>{{form.password1}}</div> <br>
+            Password confirmation: <div class='my-password2-class'>{{form.password2}}</div> <br>
+<!--                <input type='text' class="my-email-class"> <br>-->
+<!--                <input type='text' class="my-firstname-class"><br>-->
+<!--                <input type='text' class="my-lastname-class"><br>-->
+<!--                <input type='number' class="my-mobile-class"><br>-->
+<!--                <input type='password' class="my-password1-class"><br>-->
+<!--                <input type='password' class="my-password2-class"><br>-->
+<!--            {{form.as_p}}-->
+        <input id='Log_in_button' type="submit" value="Register">
+        </div>
     </form>
     Click <a href="{%url 'login'%}">here</a> to login!
 </head>

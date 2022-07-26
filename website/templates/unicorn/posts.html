@@ -1,4 +1,5 @@
 <div>
+
     <input  u:model.lazy="content" type="text" placeholder="write a comment">
         {% if messages %}
             <ul class="messages">
@@ -9,12 +10,15 @@
     {% endif %}
 
     <button u:click='submit' type="submit">Add</button>
+
     <br/>
     {% for post in posts %}
         {{ post.post_date|timesince }} ago
+        <a href="{% url 'profile' post.author.id %}">
         {{ post.author.first_name }}
         {{ post.author.last_name }}
-        <img src="{{ post.author.profile.profile_picture.url }}">
+        <img class='small_profile_picture' src="{{ post.author.profile.profile_picture.url }}">
+            </a>
         {{ post.post_content }}
         <br/>
     {% endfor %}

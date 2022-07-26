@@ -1,6 +1,5 @@
 from django_unicorn.components import UnicornView
 from ..models import Post, MyUser
-# from django.contrib.auth.models import User
 from django.contrib import messages
 
 
@@ -12,7 +11,7 @@ class PostsView(UnicornView):
 
     def mount(self):
         self.author = MyUser.objects.get(email=self.request.user)
-        self.posts = Post.objects.all()
+        self.posts = Post.objects.all().order_by('-post_date')
         return super().mount()
 
     def submit(self):
@@ -25,3 +24,4 @@ class PostsView(UnicornView):
             self.posts = Post.objects.all()
         else:
             messages.success(self.request, "Length of the comment must be at least 3 signs")
+

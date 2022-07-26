@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {{search}} - Searching Results</title>
+    {% include 'website/navbar.html' %}
+</head>
+<body>
+{% if search %}
+    You Searched for {{search}} <br>
+    {% for users_result in users_results %}
+        <a href="{% url 'profile' users_result.id %}">{{users_result}}<img alt="picture" class="small_profile_picture" src="{{users_result.profile_picture.url}}"></a>
+    {% endfor %}
+{% else %}
+
+    Hey you forgot, you searched for ..
+{% endif %}
+
+
+</body>
+</html>

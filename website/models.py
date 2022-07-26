@@ -66,7 +66,11 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    author = models.OneToOneField(MyUser, on_delete=models.CASCADE)
     post_content = models.TextField(blank=False, null=False)
     post_date = models.DateTimeField(auto_now_add=True)
 
+class Reply_for_post(models.Model):
+    author = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    reply_content = models.TextField(blank=False, null=False)
+    reply_date = models.DateTimeField(auto_now_add=True)

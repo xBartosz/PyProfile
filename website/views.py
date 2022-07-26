@@ -11,6 +11,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Post
 from django.contrib.auth.models import User
 
+
 from django.contrib import messages
 
 
@@ -22,6 +23,7 @@ class RegisterFunction(FormView):
 
     def form_valid(self, form):
         user = form.save()
+
         if user is not None:
             login(self.request, user)
         return super(RegisterFunction, self).form_valid(form)

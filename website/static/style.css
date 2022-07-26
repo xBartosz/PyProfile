@@ -58,6 +58,18 @@ body {
     text-align: center;
 }
 
+.navbar {
+    background-color: #0084ff;
+    color: #1c1e21;
+    padding: 1em;
+    height:14vm;
+}
+.small_profile_picture {
+
+    border-radius: 55px;
+    width: 100px;
+    height: auto;
+}
 
 .input_login_password {
     border-radius:6px;
@@ -108,11 +120,8 @@ footer {
     margin: -28px;
 }
 
-a:link {
+a:link, a:visited, a:hover {
     text-decoration: none;
+    color:red;
 }
 
-#btn a:link, a:visited, a:hover {
-    text-decoration: none;
-    color:white;
-}

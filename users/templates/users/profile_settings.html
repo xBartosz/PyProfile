@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>profile</title>
+    <a href="{% url 'index' %}">Strona główna</a>
+
+</head>
+<body>
+
+    {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+        {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        {{p_form}}
+        <br/>
+        <button type="submit">Zapisz</button>
+    </form>
+</body>
+</html>
