@@ -39,11 +39,7 @@
         <span style="text-align: center;"><h2>{{ post.post_content }}</h2></span>
         <hr style="opacity:30%;">
         <i class="fa fa-thumbs-up fa-2x" aria-hidden="true" style="float:left; padding-left: 10px; margin-right: 10px; color:whitesmoke;"></i>
-        <form action="{% url 'like_post' post.pk %}" method="POST">
-            {% csrf_token %}
-<!--        <i class="fa fa-comment-o fa-2x" aria-hidden="true" style="float:left;color:whitesmoke; margin-right: 350px;"></i>-->
-            <button type="submit" name="post_id" value="{{ post.id }}">Like</button>
-            </form>
+
         {% unicorn 'replies' %}
 
     </div>
