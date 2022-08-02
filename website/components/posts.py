@@ -1,5 +1,5 @@
 from django_unicorn.components import UnicornView
-from ..models import Post, MyUser
+from website.models import Post, MyUser
 from django.contrib import messages
 
 
@@ -15,13 +15,13 @@ class PostsView(UnicornView):
         return super().mount()
 
     def submit(self):
-        if len(self.content) > 3:
+        if len(self.content) >= 3:
             Post.objects.create(
                 author=self.author,
                 post_content=self.content
             )
             self.content = ""
-            self.posts = Post.objects.all()
+            self.posts = Post.objects.all().order_by('-post_date')
         else:
             messages.success(self.request, "Length of the comment must be at least 3 signs")
 

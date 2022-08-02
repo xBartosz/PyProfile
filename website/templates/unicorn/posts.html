@@ -1,26 +1,55 @@
-<div>
+{% load unicorn %}
 
-    <input  u:model.lazy="content" type="text" placeholder="write a comment">
-        {% if messages %}
+<div>
+    <span style="text-align:center;">
+     {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
                     <li>{{ message }}</li>
                 {% endfor %}
             </ul>
     {% endif %}
+    </span>
+<div id="add-post-div">
 
-    <button u:click='submit' type="submit">Add</button>
+    <div id="input-div-etc">
+    <input  u:model.lazy="content" class="post-input" type="text" placeholder="Share a news with your friends!">
 
+    </div>
+    <div id="emoji-button-etc">
+        <button u:click='submit' class="publish-post-button" type="submit">Publish</button>
+    </div>
+
+</div>
     <br/>
     {% for post in posts %}
-        {{ post.post_date|timesince }} ago
-        <a href="{% url 'profile' post.author.id %}">
-        {{ post.author.first_name }}
-        {{ post.author.last_name }}
-        <img class='small_profile_picture' src="{{ post.author.profile.profile_picture.url }}">
+    <div class="post">
+        <div id="post-author">
+        <img style='float: left;' class='small_profile_picture' src="{{ post.author.profile.profile_picture.url }}">
+
+        <span style="float:left;">
+            <a href="{% url 'profile' post.author.id %}">
+                <h4 style="padding-left: 10px;"> {{ post.author.first_name }}  {{ post.author.last_name }} </h4>
             </a>
-        {{ post.post_content }}
-        <br/>
+        </span>
+        </div>
+
+
+        <br>
+        <span style="text-align: center;"><h2>{{ post.post_content }}</h2></span>
+        <hr style="opacity:30%;">
+        <i class="fa fa-thumbs-up fa-2x" aria-hidden="true" style="float:left; padding-left: 10px; margin-right: 10px; color:whitesmoke;"></i>
+        <form action="{% url 'like_post' post.pk %}" method="POST">
+            {% csrf_token %}
+<!--        <i class="fa fa-comment-o fa-2x" aria-hidden="true" style="float:left;color:whitesmoke; margin-right: 350px;"></i>-->
+            <button type="submit" name="post_id" value="{{ post.id }}">Like</button>
+            </form>
+        {% unicorn 'replies' %}
+
+    </div>
+    <br>
+    <br>
+    <br>
     {% endfor %}
 
 </div>

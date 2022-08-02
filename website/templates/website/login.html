@@ -1,42 +1,51 @@
+{% extends 'website/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css'%}">
-</head>
-<body>
 
-<div id="left_div_login">
-<img class="fb_logo" src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg" alt="Facebook">
-<br>
-    <h4>Connect with friends and the world around you on Facebook.</h4>
+{% block title %}
+    <title>PyProfile - Login</title>
+{% endblock title %}
+
+{% block content %}
+
+
+
+
+<div id="PyProfile-logo">
+        <img class="PyProfile_main_website" src="{% static 'PyProfile.png' %}">
 </div>
 
-<div id="Log_in_div">
- <form method="post">
-        {%csrf_token%}
-     <div id="login_password_placeholder">
-            <input class='input_login_password' type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username"
-            maxlength="150" class="my-username-class"  id="id_username" placeholder="Email or phone number"></p>
+
+
+<div class="login-div">
+    <form method="POST">
+    {%csrf_token%}
+        <i class="fa fa-user-circle fa-2x" aria-hidden="true" style="color:white;">
+        <input class="my-username-class" type="email" name="username" autofocus="" autocapitalize="none" autocomplete="username"
+            maxlength="150" class="my-username-class"  id="id_username" placeholder="Email"></i>
+
+        <br>
+
+        <i class="fa fa-lock fa-3x" aria-hidden="true" style="color:white; margin-top:15px;">
+        <input class="my-password-class" type="password" name="password" autocomplete="current-password"
+               class="my-password-class"  id="id_password" placeholder="Password"></i>
+        <br>
 
 
 
-            <input class='input_login_password' type="password" name="password" autocomplete="current-password"
-                class="my-password-class"  id="id_password" placeholder="Password"></p>
-     </div>
-        <input id='Log_in_button' type="submit" value="Log In">
+        <input type="submit" id="login-button" value="Login" style="margin: 50px 0px 40px 50px;">
+        </br>
+        </br>
+        <span style="font-size:17px; margin-left:30px; color:white;">Don't you have an account yet? Click <a href="{% url 'register' %}" style="color:gold;">here</a></span>
+        <br><br>
+        <span style="font-size:17px; margin-left:30px; color:white;">Forgot your password? Click <a href="{% url 'reset_password' %}" style="color:gold;">here</a></span>
+
     </form>
-    <br/>
-    <a href="#">Forgot password?</a>
-    <div id="horizontal_line_login"></div>
-    <button id='Create_new_account_button' type="submit"><a id='btn' href="{% url 'register' %}">Create new account</a></button>
-</div>
 
-<div id="short_text_under_login">
-    <b>Create a Page</b> for a celebrity, brand or business.
-</div>
+    </div>
 
-</body>
-</html>
+    </form>
+
+    </div>
+
+
+{% endblock content %}

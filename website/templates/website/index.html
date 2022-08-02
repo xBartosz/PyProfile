@@ -1,18 +1,50 @@
+{% extends 'website/base.html' %}
+
 {% load unicorn %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% include 'website/navbar.html' %}
+
+{% block title %}
+{% include 'website/navbar.html' %}
+
     {% unicorn_scripts %}
-    <meta charset="UTF-8">
-    <title>Index</title>
+    <title> Welcome to PyProfile! </title>
+{% endblock title %}
 
 
-</head>
-<body>
+
+{% block content %}
+
+<div class="index-left"></div>
+
+<div class="index-middle">
 {% csrf_token %}
-<a href="{% url 'allusers' %}">Friends</a>
-{% unicorn 'posts' %}
 
-</body>
-</html>
+{% unicorn 'posts' %}
+</div>
+
+<div class="index-right">
+    Friends:
+    <br>
+    <br>
+    {% for friend in friends %}
+<!--        {% if user.is_online %}-->
+<!--            <div class="online">-->
+<!--                dupa romana <img class="small_profile_picture" src="{{friend.profile_picture.url}}">-->
+<!--                {{friend.first_name}}-->
+<!--                {{friend.last_name}}-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <br>-->
+<!--        {% else %}-->
+            <img class="small_profile_picture" src="{{friend.profile_picture.url}}">
+                {{friend.first_name}}
+                {{friend.last_name}}
+<!--        {% endif %}-->
+
+    {% endfor %}
+</div>
+
+
+{% endblock content %}
+
+
+

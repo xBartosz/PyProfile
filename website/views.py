@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth.views import LoginView, FormView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+import users.models
+from django.http import HttpResponseRedirect
 from django.contrib.auth import login
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from .forms import UserRegisterForm, PostForm
 from django.contrib.auth.decorators import login_required
@@ -38,6 +40,20 @@ class LoginFunction(LoginView):
     template_name = 'website/login.html'
     redirect_authenticated_user = True
     next_page = 'index'
+
+@login_required(login_url='login')
+def index(request):
+    friends = users.models.Profile.objects.exclude(id=request.user.id)
+    context = {'friends' : friends}
+
+    return render(request, 'website/index.html', context)
+
+# def LikeView(request, pk):
+#     post = get_object_or_404(Post, id=request.POST.get('post_id'))
+#     post.likes.add(request.user)
+#
+
+
 
 # def authenticate_user(email, password):
 #     try:
@@ -74,9 +90,6 @@ class LoginFunction(LoginView):
 #             return redirect(self.request.GET.get('next', '/'))
 
 
-@login_required(login_url='login')
-def index(request):
-    return render(request, 'website/index.html')
 
 # class IndexWebsite(ListView):
 #     model = Post

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'users',
     'chat',
     'django_unicorn',
-    'friends'
+    'friends',
 
 ]
 
@@ -132,4 +132,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'website.MyUser' #dodane
 
+# AUTHENTICATION_BACKENDS = (
+#     'website.backends.MyBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# )
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-relay.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'pyprofileofficial@gmail.com'
+EMAIL_HOST_PASSWORD = 'Kozak524$'

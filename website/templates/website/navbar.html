@@ -1,20 +1,29 @@
 {% load static %}
-<body>
+<head>
+    <link rel="icon" href="https://d29fhpw069ctt2.cloudfront.net/icon/image/84627/preview.svg" type="image/x-icon">
+</head>
 <div class="navbar">
-<link rel="stylesheet" type="text/css" href='{% static "style.css" %}'>
-<a href="{% url 'index' %}"><img src="{% static 'fb_logo.png' %}" alt="logo"></a>
 
-    <form method="post" action="{% url 'search_users' %}">
+<a href="{% url 'index' %}"><img src="{% static 'PyProfile.png' %}" style='width:300px; height:auto; float:left; padding-top: 5px;' alt="logo"></a>
+
+    <form class="form-search" method="post" action="{% url 'search_users' %}">
         {% csrf_token %}
-    <input type="search" placeholder="Search friends" name="search">
-        <button type="submit">Submit</button>
+        <div id="search-friends">
+        <i class="fa fa-search" aria-hidden="true" style="color: #5c5d71; float:left; padding: 5.5%;"></i>
+
+            <input type="search" class="input-search-friends" placeholder="Search friends" name="search">
+            <button type="submit" class="button-standard" hidden="hidden" style="float:left;">Submit</button>
+        </div>
     </form>
 
-    <span style="padding-left: 80em;">
-    <img class='small_profile_picture' src="{{ user.profile.profile_picture.url }}">
-    <a href="{% url 'profile_settings' %}">{{user.first_name}} {{user.last_name}}</a>
-    <a href="{%url 'logout'%}">Logout</a>
+    <div class="right-side-navbar">
+        <img class='small_profile_picture' style="float:left; margin-top: 1.5em;" src="{{ user.profile.profile_picture.url }}">
+        <span style="padding: 2.5em 0 0 1em; float:left;">
+            <a href="{% url 'profile_settings' %}">{{user.first_name}} {{user.last_name}}</a>
+        <a href="{%url 'logout'%}" style="padding-left: 20px; color:gold;">Logout</a>
         </span>
+    </div>
+
 
 </div>
-</body>
+

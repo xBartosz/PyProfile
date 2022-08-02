@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils.text import slugify
+from django.contrib.humanize.templatetags.humanize import naturaltime
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 class CustomUserManager(BaseUserManager):
 
@@ -39,7 +42,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=240)
     last_name = models.CharField(max_length=240)
     mobile = models.CharField(max_length=50)
-
+    # last_online = models.DateTimeField(blank=True, null=True)
 
     is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
@@ -50,6 +53,28 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile']
 
+
+
+
+    #
+    # # In this method, check that the date of the last visit is not older than 15 minutes
+    # def is_online(self):
+    #     if self.last_online:
+    #         return (timezone.now() - self.last_online) < timezone.timedelta(minutes=15)
+    #     return False
+    #
+    #
+    # # If the user visited the site no more than 15 minutes ago,
+    # def get_online_info(self):
+    #     if self.is_online():
+    #         # then we return information that he is online
+    #         return _('Online')
+    #     if self.last_online:
+    #         # otherwise we write a message about the last visit
+    #         return _('Last visit {}').format(naturaltime(self.last_online))
+    #         # If you have only recently added information about a user visiting the site
+    #         # then for some users there may not be any information about the visit, we will return information that the last visit is unknown
+    #     return _('Unknown')
 
 # class Author(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -66,11 +91,17 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Post(models.Model):
-    author = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post_content = models.TextField(blank=False, null=False)
     post_date = models.DateTimeField(auto_now_add=True)
+    # likes = models.ManyToManyField(MyUser, related_name='posts', null=True, blank=True)
+
+    # def total_likes(self):
+    #     return self.likes.count()
+
 
 class Reply_for_post(models.Model):
-    author = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    reply_author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     reply_content = models.TextField(blank=False, null=False)
     reply_date = models.DateTimeField(auto_now_add=True)

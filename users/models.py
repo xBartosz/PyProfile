@@ -3,6 +3,7 @@ from django.db import models
 from PIL import Image
 from website.views import RegisterFunction
 from website.models import MyUser
+import users.models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
@@ -20,15 +21,15 @@ class Profile(models.Model):
 
 
 
-    # def save(self,*args, **kwargs):
-    #     super().save()
-    #
-    #     img = Image.open(self.profile_picture.path)
-    #
-    #     if img.height > 300 or img.width > 300:
-    #         output_size = (300, 300)
-    #         img.thumbnail(output_size)
-    #         img.save(self.profile_picture.path)
+    def save(self,*args, **kwargs):
+        super().save()
+
+        img = Image.open(self.profile_picture.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.profile_picture.path)
 
 
 
@@ -36,7 +37,6 @@ class Profile(models.Model):
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance, first_name=instance.first_name, last_name=instance.last_name)
-
 
 
 # class CustomUser(AbstractUser):

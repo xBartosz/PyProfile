@@ -1,30 +1,40 @@
+{% extends 'website/base.html' %}
+{% block title%}
+{% include 'website/navbar.html' %}
+<title>{{profiles.first_name}}{{profiles.last_name}}- Profile</title>
+{% endblock title %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{profiles.first_name}}{{profiles.last_name}}- Profile</title>
 
-    {%include 'website/navbar.html' %}
-</head>
-<body>
-<a href="{% url 'allusers' %}">Move Back</a>
+{% block content %}
+
 <br>
-
-    {{profiles.first_name}}
-    {{profiles.last_name}}
-    <img src="{{profiles.profile_picture.url}}">
-
-
+    <span style="font-family: Montserrat;">
+        {{profiles.first_name}}
+        {{profiles.last_name}}
+        <img src="{{profiles.profile_picture.url}}">
+    </span>
 
 <br>
 
-{% for post in user_posts %}
-    {{post.post_content}}
-    {{post.post_date}}
-    {{post.author.first_name}}
-    {{post.author.last_name}}
-    <img class="small_profile_picture" src="{{post.author.profile.profile_picture.url}}" alt="{{post.author.first_name}} {{post.author.last_name}} profile's image">
+    {% for post in user_posts %}
+        <div class="post">
+        <div id="post-author">
+        <img style='float: left;' class='small_profile_picture' src="{{ post.author.profile.profile_picture.url }}">
+
+        <span style="float:left;">
+            <a href="{% url 'profile' post.author.id %}">
+                <h4 style="padding-left: 10px;"> {{ post.author.first_name }}  {{ post.author.last_name }} </h4>
+            </a>
+        </span>
+        </div>
+
+
+        <br>
+        <span style="text-align: center;"><h2>{{ post.post_content }}</h2></span>
+        <hr style="opacity:30%;">
+        <i class="fa fa-thumbs-up fa-2x" aria-hidden="true" style="float:left; padding-left: 10px; margin-right: 10px; color:whitesmoke;"></i>
+        <i class="fa fa-comment-o fa-2x" aria-hidden="true" style="float:left;color:whitesmoke; margin-right: 350px;"></i>
+        </div>
+<br><br><br>
 {% endfor %}
-</body>
-</html>
+{% endblock content %}

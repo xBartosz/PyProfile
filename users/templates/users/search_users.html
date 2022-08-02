@@ -1,22 +1,24 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'website/base.html' %}
+    {% block title %}
     <title> {{search}} - Searching Results</title>
     {% include 'website/navbar.html' %}
-</head>
-<body>
+    {% endblock title %}
+
+{% block content %}
 {% if search %}
-    You Searched for {{search}} <br>
+<div id="search-users-div">
+
+    You Searched for "{{search}}": <br><br><br>
     {% for users_result in users_results %}
-        <a href="{% url 'profile' users_result.id %}">{{users_result}}<img alt="picture" class="small_profile_picture" src="{{users_result.profile_picture.url}}"></a>
+
+        <a href="{% url 'profile' users_result.id %}"><img alt="picture" style="margin-top: 40px;" class="small_profile_picture" src="{{users_result.profile_picture.url}}">
+            {{users_result}}</a>
+
     {% endfor %}
+</div>
 {% else %}
 
     Hey you forgot, you searched for ..
 {% endif %}
 
-
-</body>
-</html>
+{% endblock content %}

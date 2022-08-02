@@ -1,127 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+
+:root {
+    --bg-color: #151728;
+    --font: 'Montserrat', sans-serif;
+    --font-color: #5c5d71;
+    --bg-behind: #ccc8db;
+}
+
+html {
+    font-family: var(--font);
+
+}
+
 body {
-    font-family: inherit;
-    background-color: #f0f2f5;
-    direction: ltr;
-    line-height: 1.34;
-    margin: 0;
-    padding: 0;
-    unicode-bidi: embed;
-    overflow-y: scroll;
-
+    padding:0px;
+    margin:0px;
+    height:100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #24273b;
+    /*background-image: linear-gradient(to right top, #301a5a, #28215e, #202762, #152c65, #073167);*/
 }
 
-#Log_in_button {
-   background-color: #1877f2;
-    border: none;
-    border-radius: 6px;
-    font-size: 20px;
-    line-height: 48px;
-    padding: 0 16px;
-    width: 332px;
-    color:white;
-    font-weight: bold;
+/*LOGIN, REGISTER SITE*/
 
+.PyProfile_main_website {
+    height:200px;
+    width: auto;
 }
-
-#Create_new_account_button {
-    border: none;
-    border-radius: 6px;
-    font-size: 17px;
-    line-height: 48px;
-    padding: 0 16px;
-    background-color: #42b72a;
-    color:white;
-        font-weight: bold;
-
-}
-
-#Log_in_div {
-    align-items: center;
+#PyProfile-logo-register {
     text-align: center;
-    background-color: #fff;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
-    box-sizing: border-box;
-    margin: 40px 0 0;
-    padding: 20px 0 28px;
-    width: 396px;
+    padding-top:3em;
+}
+#PyProfile-logo {
+    text-align: center;
+    padding-top:5em;
+}
+
+
+input[type=submit], .button-standard{
+    background-color: #212F3D ;
+    border-radius: 20px;
+    margin: 5px 20px 5px 20px;
+    width:auto;
+    height:40px;
+    font-size:14px;
+    color:whitesmoke;
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+input[type=submit].register-button {
+    background-color: #212F3D ;
+    border-radius: 20px;
+    margin: 5px 25px 5px 25px;
+    width:150px;
+    height:40px;
+    font-size:17px;
+    color:whitesmoke;
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+#login-button {
+    background-color: var(--bg-color);
+    border: 1px solid #0d181d;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-left: auto;
+    box-shadow: 0 0 20px #212F3D;
+    cursor: pointer;
+}
+
+input[type=password], input[type=text].my-firstname-class, input[type=text].my-mobile-class,
+    input[type=text].my-lastname-class, input[type=email] {
+    border:none;
+    outline:none;
+    display:inline-block;
+    height:54px;
+    vertical-align:middle;
+    position:relative;
+    border-radius:22px;
+    width:220px;
+    box-sizing:border-box;
+    margin-left:10px;
+    padding:0 18px;
+    color:whitesmoke;
+    background-color: var(--bg-color);
+    margin-top:10px;
+    font-size:15px;
+
+}
+
+.center {
+    text-align:center;
+}
+#register-div {
+    color:white;
+    margin: 3em 0em 0em 0em;
     float:left;
-    margin: 15em 15em 5em;
-
-}
-#horizontal_line_login {
-    align-items: center;
-    border-bottom: 1px solid #dadde1;
-    display: flex;
-    margin: 20px 16px;
     text-align: center;
+    width:100%;
 }
+
+.login-div {
+    padding-top:5em;
+    float:left;
+    text-align: center;
+    width:100%;
+    color:white;
+}
+
+.reset-password-div {
+    padding-top:5em;
+    color:white;
+    float:left;
+    text-align: center;
+    width:100%;
+    box-sizing: border-box;
+}
+
+
+.small_profile_picture {
+    height: 50px;
+    width: auto;
+    border-radius: 50px;
+}
+
+/*INDEX SITE*/
+/*margin zewnatrz*/
 
 .navbar {
-    background-color: #0084ff;
-    color: #1c1e21;
-    padding: 1em;
-    height:14vm;
-}
-.small_profile_picture {
-
-    border-radius: 55px;
-    width: 100px;
-    height: auto;
-}
-
-.input_login_password {
-    border-radius:6px;
-    border: 1px solid #dddfe2;
-    color: #1d2129;
-    font-family: Helvetica, Arial, sans-serif;
-    line-height: 16px;
-    padding: 0 8px;
-    vertical-align: middle;
-    font-size: 17px;
-    width: 358px;
-    height: 58px
-}
-
-#left_div_login {
+    background-color: var(--bg-color);
+    height: 6em;
+    width: 100%;
     float:left;
-    padding-top:10em;
-    padding-left:10em;
-    font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
-    font-size: 28px;
-    font-weight: normal;
-    line-height: 32px;
-    width: 500px;
+    margin-bottom: 2em;
 
 }
 
-#short_text_under_login {
-    padding-top:0px;
-    margin-left: 66em;
-    position: relative;
+.input-search-friends {
     float:left;
-}
-h4 {
-    margin-block-start: 0.83em;
-    margin-block-end: 0.83em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: normal;
+    background-color: var(--bg-color);
+    color: whitesmoke;
+    width:15em;
+    height:4em;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    outline: none;
 
 }
 
-footer {
-
+#search-friends {
+    float:left;
+    width: 30em;
+    height: 6em;
+    padding: 1em 25em 0em 25em;
 }
-
-.fb_logo {
-    height: 106px;
-    margin: -28px;
+.right-side-navbar {
+    width: 20em;
+    float:left;
+    color: var(--font-color);
+    font-size: 15px;
 }
 
 a:link, a:visited, a:hover {
     text-decoration: none;
-    color:red;
+    color: whitesmoke;
 }
 
+.index-left {
+    float:left;
+    width: 20%;
+    height:60em;
+
+}
+
+.index-middle {
+    float:left;
+    width: 50%;
+    height:60em;
+    padding: 0 5% 0 5%;
+    color:whitesmoke;
+
+}
+
+.index-right {
+    float:right;
+    text-align: center;
+    width: 20%;
+    height:60em;
+    color:whitesmoke;
+    padding: 20px 0px 0px 50px;
+    box-sizing: border-box;
+    background-color: var(--bg-color);
+
+
+
+}
+
+.form-search {
+
+}
+
+.post {
+    background-color: var(--bg-color);
+    padding:10px;
+    width: 45em;
+    height:auto;
+    margin: 0em 8em 0em 8em;
+    font-size: 15px;
+
+
+
+
+}
+
+#post-author {
+    float:left;
+}
+
+#add-post-div {
+    background-color: var(--bg-color);
+    border-radius: 12px;
+    height: 5em;
+    width: 35em;
+    padding:10px;
+    margin: 0% 0% 5% 20%;
+
+
+}
+.post-input{
+    background-color: var(--bg-color);
+    border-radius: 15px;
+    border:none;
+    height: 2em;
+    width: 30em;
+    outline: none;
+    text-align: left;
+    float:left;
+    font-size: 18px;
+    color: whitesmoke;
+
+
+}
+
+.publish-post-button {
+    background-color: #1b86f9;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 20px #1b86f9;
+    cursor: pointer;
+
+
+}
+
+#input-div-etc {
+    float:left;
+    width:100%;
+}
+
+#emoji-button-etc {
+    float:right;
+
+}
+
+#write-a-reply {
+    font-size: 14px;
+    background-color: #474851;
+    border:none;
+    border-radius: 20px;
+    color:white;
+    height: 30px;
+    width: 160px;
+    outline: none;
+    padding-left: 15px;
+}
+
+#search-users-div {
+    float:left;
+    width: 100%;
+    height:auto;
+    text-align:center;
+    font-family: var(--font);
+    color:gold;
+    padding-top: 3em;
+
+}
