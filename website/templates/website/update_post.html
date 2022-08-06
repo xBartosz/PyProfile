@@ -1,0 +1,28 @@
+{% extends 'website/base.html' %}
+
+
+{% block title %}
+{% include 'website/navbar.html' %}
+
+
+    <title> Welcome to PyProfile! </title>
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="edit-post">
+    <h1>Edit your Post!</h1>
+    <br>
+    <form method="POST">
+        {% csrf_token %}
+        {{form_post.post_content}}
+        <br><br>
+        <button type="submit" class="button-standard">Update</button>
+    </form>
+</div>
+
+{% endblock content %}
+
+
+

@@ -9,10 +9,12 @@
 
 html {
     font-family: var(--font);
+    color: white;
 
 }
 
 body {
+    color: white;
     padding:0px;
     margin:0px;
     height:100%;
@@ -37,6 +39,14 @@ body {
     padding-top:5em;
 }
 
+.like-btn-without-bg {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    color:white;
+    cursor:pointer;
+    font-size: 15px;
+}
 
 input[type=submit], .button-standard{
     background-color: #212F3D ;
@@ -73,7 +83,7 @@ input[type=submit].register-button {
     cursor: pointer;
 }
 
-input[type=password], input[type=text].my-firstname-class, input[type=text].my-mobile-class,
+input[type=password], input[type=text], input[type=text].my-firstname-class, input[type=text].my-mobile-class,
     input[type=text].my-lastname-class, input[type=email] {
     border:none;
     outline:none;
@@ -90,6 +100,25 @@ input[type=password], input[type=text].my-firstname-class, input[type=text].my-m
     background-color: var(--bg-color);
     margin-top:10px;
     font-size:15px;
+
+}
+textarea {
+    border:none;
+    outline:none;
+    display:inline-block;
+    height:auto;
+    vertical-align:middle;
+    position:relative;
+    border-radius:22px;
+    width:auto;
+    box-sizing:border-box;
+    margin-left:10px;
+    padding:5px 18px;
+    color:whitesmoke;
+    background-color: var(--bg-color);
+    margin-top:10px;
+    font-size:15px;
+    resize: none;
 
 }
 
@@ -128,6 +157,11 @@ input[type=password], input[type=text].my-firstname-class, input[type=text].my-m
     border-radius: 50px;
 }
 
+.mediun_profile_picture {
+    height: 150px;
+    width: auto;
+    border-radius: 50px;
+}
 /*INDEX SITE*/
 /*margin zewnatrz*/
 
@@ -137,6 +171,8 @@ input[type=password], input[type=text].my-firstname-class, input[type=text].my-m
     width: 100%;
     float:left;
     margin-bottom: 2em;
+    padding-top:0px;
+    margin-top:0px;
 
 }
 
@@ -151,6 +187,24 @@ input[type=password], input[type=text].my-firstname-class, input[type=text].my-m
     border-radius: 30px;
     outline: none;
 
+}
+
+input[type=text].my-reply-content-class {
+    border:solid 1px gray;
+    outline:none;
+    display:inline-block;
+    height:54px;
+    vertical-align:middle;
+    position:relative;
+    border-radius:22px;
+    width:220px;
+    box-sizing:border-box;
+    margin-left:10px;
+    padding:0 18px;
+    color:whitesmoke;
+    background-color: var(--bg-color);
+    margin-top:10px;
+    font-size:15px;
 }
 
 #search-friends {
@@ -201,25 +255,27 @@ a:link, a:visited, a:hover {
 
 }
 
-.form-search {
 
-}
 
 .post {
     background-color: var(--bg-color);
+    color:white;
     padding:10px;
     width: 45em;
     height:auto;
     margin: 0em 8em 0em 8em;
     font-size: 15px;
+    box-sizing: border-box;
 
+}
 
-
-
+.post-text {
+    box-sizing: border-box;
 }
 
 #post-author {
     float:left;
+    box-sizing: border-box;
 }
 
 #add-post-div {
@@ -232,7 +288,13 @@ a:link, a:visited, a:hover {
 
 
 }
-.post-input{
+.edit-post {
+    box-sizing: border-box;
+    float:left;
+    text-align:center;
+    width:100%;
+}
+input[type=text].my-post-content-class {
     background-color: var(--bg-color);
     border-radius: 15px;
     border:none;
@@ -245,20 +307,21 @@ a:link, a:visited, a:hover {
     color: whitesmoke;
 
 
-}
 
+}
 .publish-post-button {
     background-color: #1b86f9;
+    box-shadow: 0 0 20px #1b86f9;
     border: none;
     color: #fff;
     border-radius: 4px;
     padding: 10px 20px;
     margin-bottom: 10px;
-    box-shadow: 0 0 20px #1b86f9;
     cursor: pointer;
 
 
 }
+
 
 #input-div-etc {
     float:left;
@@ -292,3 +355,67 @@ a:link, a:visited, a:hover {
     padding-top: 3em;
 
 }
+
+/*3 dots*/
+.three-dots:after {
+    cursor: pointer;
+    color: white;
+    content: '\2807';
+    font-size: 20px;
+    padding: 0 5px;
+    box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a div {
+  padding: 2px;
+}
+
+.dropdown {
+    box-sizing: border-box;
+    float:left;
+    /*right: 10px;*/
+    background-color: #1b86f9;
+    box-shadow: 0 0 10px #1b86f9;
+    outline: none;
+    opacity: 0;
+    z-index: -1;
+    max-height: 0;
+
+
+}
+
+.dropdown-navbar {
+    box-sizing: border-box;
+    float:left;
+    /*right: 10px;*/
+    background-color: var(--bg-color);
+    box-shadow: 0 0 10px var(--bg-color);
+    outline: none;
+    opacity: 0;
+    z-index: -1;
+    max-height: 0;
+
+}
+.dropdown-container{
+    float:right;
+}
+.dropdown-container:focus {
+  outline: none;
+
+}
+
+.dropdown-container:focus .dropdown, .dropdown-container:focus .dropdown-navbar {
+  opacity: 1;
+  z-index: 100;
+  max-height: 100vh;
+
+}
+
+
+
+/*Input type file*/

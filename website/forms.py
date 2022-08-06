@@ -1,7 +1,7 @@
 from django import forms
 # from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Post, MyUser
+from .models import Post, MyUser, Reply_for_post
 #
 class UserRegisterForm(UserCreationForm):
 
@@ -14,10 +14,31 @@ class PostForm(forms.ModelForm):
     post_content = forms.CharField(widget=forms.Textarea(attrs={
         'rows' : '4',
     }))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['post_content'].widget.attrs.update(
+            {'class': 'my-post-content-class'}
+        )
 
     class Meta:
         model = Post
         fields = ['post_content']
+
+class PostLike(forms.ModelForm):
+
+    class Meta:
+        model = Post
+        fields = ['likes']
+
+class ReplyForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['reply_content'].widget.attrs.update(
+            {'class': 'my-reply-content-class'}
+        )
+    class Meta:
+        model = Reply_for_post
+        fields = ['reply_content']
 
 # class CustomLoginForm(AuthenticationForm):
 #

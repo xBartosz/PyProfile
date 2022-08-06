@@ -1,11 +1,13 @@
 from django.urls import path
-from .views import LoginFunction, RegisterFunction, index
+from .views import LoginFunction, RegisterFunction, index, delete_post, update_post, like_post
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
     path('', index, name='index'),
+
+
     path('login/', LoginFunction.as_view(), name='login'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('register/', RegisterFunction.as_view(), name='register'),
@@ -15,5 +17,8 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path('reset_password_complete', auth_views.PasswordResetCompleteView.as_view(template_name="website/reset_password_complete.html"), name="password_reset_complete"),
 
+    path('delete_post/<int:id>', delete_post, name='delete_post'),
+    path('update_post/<int:id>', update_post, name='update_post'),
+    path('like/<int:id>', like_post, name='like_post')
     # path('like/<int:pk>', LikeView, name='like_post'),
 ]

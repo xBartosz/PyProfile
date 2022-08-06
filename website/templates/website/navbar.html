@@ -16,14 +16,21 @@
         </div>
     </form>
 
-    <div class="right-side-navbar">
+
         <img class='small_profile_picture' style="float:left; margin-top: 1.5em;" src="{{ user.profile.profile_picture.url }}">
         <span style="padding: 2.5em 0 0 1em; float:left;">
-            <a href="{% url 'profile_settings' %}">{{user.first_name}} {{user.last_name}}</a>
-        <a href="{%url 'logout'%}" style="padding-left: 20px; color:gold;">Logout</a>
+            <a href="{% url 'profile' user.id %}">{{user.first_name}} {{user.last_name}}</a>
         </span>
-    </div>
+
+<br><br>
+            <div class="dropdown-container" tabindex="-1">
+                <div class="three-dots"></div>
+                    <div class="dropdown-navbar">
+                        <a href="{%url 'logout'%}" style="padding-left: 20px; color:gold;"><div>Logout</div></a>
+                        <a href="{% url 'profile_settings' %}" style="float:right;"><div>Settings</div></a>
+                    </div>
+            </div>
+
 
 
 </div>
-

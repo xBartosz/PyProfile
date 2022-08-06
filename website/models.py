@@ -94,14 +94,20 @@ class Post(models.Model):
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post_content = models.TextField(blank=False, null=False)
     post_date = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(MyUser, related_name='post_likes')
+
+    def count_likes(self):
+        return self.likes.count()
     # likes = models.ManyToManyField(MyUser, related_name='posts', null=True, blank=True)
 
+    # def save(self, *args, **kwargs):
+    #     super(Post, self).save(*args, **kwargs)
     # def total_likes(self):
     #     return self.likes.count()
 
 
 class Reply_for_post(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     reply_author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     reply_content = models.TextField(blank=False, null=False)
     reply_date = models.DateTimeField(auto_now_add=True)

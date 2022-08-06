@@ -1,11 +1,13 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from .forms import ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Value as V
 from django.db.models.functions import Concat
-from website.models import Post
+from website.models import Post, MyUser
 from users.models import Profile
+from website.forms import ReplyForm
 
 def search_users(request):
     if request.method == "POST":
@@ -33,15 +35,22 @@ def profile_settings(request):
 
 @login_required(login_url='login')
 def users_profile(request, user_id):
+    get_id = request.POST.get("post_id")
     profiles = Profile.objects.get(id=user_id)
-    user_posts = Post.objects.filter(author=profiles.user)
+    user_posts = Post.objects.filter(author=profiles.user).order_by('-post_date')
+    form_reply = ReplyForm(request.POST or None)
 
-    context = {
-                'user_posts' : user_posts,
-                'profiles' : profiles
-               }
+    if request.method == 'POST':
+      if form_reply.is_valid():
+          form_reply.instance.reply_author = MyUser.objects.get(id=request.user.id)
+          form_reply.instance.post = Post.objects.get(id=get_id)
+          form_reply.save()
+          return HttpResponseRedirect(request.path_info)
 
+    context = {'user_posts' : user_posts, 'profiles' : profiles}
     return render(request, 'users/profile.html', context)
+
+
 
 @login_required(login_url='login')
 def users_list(request):

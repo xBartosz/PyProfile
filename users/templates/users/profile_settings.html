@@ -6,7 +6,7 @@
 {% endblock title%}
 
 {% block content %}
-
+<div>
     {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}
@@ -14,12 +14,16 @@
                     {% endfor %}
                 </ul>
         {% endif %}
-
+</div>
     <form method="post" enctype="multipart/form-data">
         {%csrf_token%}
-        {{p_form}}
+        <div class="edit-post">
+            First name: {{p_form.first_name}}<br>
+            Last name: {{p_form.last_name}}<br><br><br>
+            {{p_form.profile_picture}}<br><br>
+            <input type="submit" value="Zapisz">
+        </div>
 
         <br/>
-        <button type="submit">Zapisz</button>
     </form>
 {% endblock %}

@@ -1,23 +1,27 @@
 {% extends 'website/base.html' %}
 {% block title%}
 {% include 'website/navbar.html' %}
-<title>{{profiles.first_name}}{{profiles.last_name}}- Profile</title>
+<title>{{profiles.first_name}} {{profiles.last_name}} - Profile</title>
 {% endblock title %}
 
 
 {% block content %}
 
 <br>
-    <span style="font-family: Montserrat;">
+    <span style="font-family: Montserrat; color:white;">
+        <img src="{{profiles.profile_picture.url}}" class="mediun_profile_picture">
+        <h2>
         {{profiles.first_name}}
         {{profiles.last_name}}
-        <img src="{{profiles.profile_picture.url}}">
+        </h2>
     </span>
 
 <br>
 
     {% for post in user_posts %}
-        <div class="post">
+
+    <div class="post">
+
         <div id="post-author">
         <img style='float: left;' class='small_profile_picture' src="{{ post.author.profile.profile_picture.url }}">
 
@@ -33,8 +37,26 @@
         <span style="text-align: center;"><h2>{{ post.post_content }}</h2></span>
         <hr style="opacity:30%;">
         <i class="fa fa-thumbs-up fa-2x" aria-hidden="true" style="float:left; padding-left: 10px; margin-right: 10px; color:whitesmoke;"></i>
-        <i class="fa fa-comment-o fa-2x" aria-hidden="true" style="float:left;color:whitesmoke; margin-right: 350px;"></i>
-        </div>
+
+        <form method="post">
+            {%csrf_token%}
+            <input type="hidden" name="post_id" value="{{post.id}}">
+            <input  type="text" name="reply_content"  class="my-reply-content-class" placeholder="Add a comment">
+            <button type="submit" hidden="True">Add</button>
+        </form>
+        {% for replies in post.comments.all %}
+        <p>{{replies.reply_date|timesince}} ago</p>
+            <a href="{% url 'profile' replies.reply_author.id %}">
+                {{replies.reply_author.first_name}}
+                {{replies.reply_author.last_name}}
+                <img class='small_profile_picture' src="{{ replies.reply_author.profile.profile_picture.url }}">
+            </a>
+        <span style="color:gold;">{{replies.reply_content}}</span>
+
+        {% endfor %}
+
+    </div>
+
 <br><br><br>
 {% endfor %}
 {% endblock content %}

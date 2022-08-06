@@ -6,11 +6,11 @@ import users.models
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login
 from django.shortcuts import redirect, get_object_or_404
-from django.urls import reverse_lazy
-from .forms import UserRegisterForm, PostForm
+from django.urls import reverse_lazy, reverse
+from .forms import UserRegisterForm, PostForm, ReplyForm, PostLike
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post
+from .models import Post, MyUser, Reply_for_post
 from django.contrib.auth.models import User
 
 
@@ -41,12 +41,93 @@ class LoginFunction(LoginView):
     redirect_authenticated_user = True
     next_page = 'index'
 
+
+
 @login_required(login_url='login')
 def index(request):
-    friends = users.models.Profile.objects.exclude(id=request.user.id)
-    context = {'friends' : friends}
+    get_id = request.POST.get("post_id")
+    get_id2 = request.POST.get("id_post")
 
+
+    friends = users.models.Profile.objects.exclude(id=request.user.id)
+    posts = Post.objects.all().order_by('-post_date')
+
+
+    form_post = PostForm(request.POST or None)
+    form_reply = ReplyForm(request.POST or None)
+
+
+    liked = False
+
+
+
+
+    if request.method == 'POST':
+        if form_post.is_valid():
+            form_post.instance.author = MyUser.objects.get(id=request.user.id)
+            form_post.save()
+            return redirect('index')
+
+        if form_reply.is_valid():
+            form_reply.instance.reply_author = MyUser.objects.get(id=request.user.id)
+            form_reply.instance.post = Post.objects.get(id=get_id)
+            form_reply.save()
+            return redirect('index')
+
+
+
+    context = {'friends': friends, 'form_post': form_post, 'posts': posts, 'liked' : liked
+               }
     return render(request, 'website/index.html', context)
+
+def delete_post(request, id):
+    post = Post.objects.get(id=id)
+    post.delete()
+    return redirect('index')
+
+def update_post(request, id):
+    post = Post.objects.get(id=id)
+    form_post = PostForm(request.POST or None, instance=post)
+
+    if form_post.is_valid():
+        form_post.save()
+        return redirect('index')
+
+    context = {'form_post' : form_post, 'post' : post}
+    return render(request, 'website/update_post.html', context)
+
+def like_post(request, id):
+    post = get_object_or_404(Post, id=request.POST.get("post_id_like"))
+    liked = False
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+
+    return HttpResponseRedirect(reverse('index'))
+
+    #
+    # def mount(self):
+    #     self.author = MyUser.objects.get(email=self.request.user)
+    #     self.posts = Post.objects.all().order_by('-post_date')
+    #     return super().mount()
+    #
+    # def submit(self):
+    #     if len(self.content) >= 3:
+    #         Post.objects.create(
+    #             author=self.author,
+    #             post_content=self.content
+    #         )
+    #         self.content = ""
+    #         self.posts = Post.objects.all().order_by('-post_date')
+    #     else:
+    #         messages.success(self.request, "Length of the comment must be at least 3 signs")
+
+
+
+
 
 # def LikeView(request, pk):
 #     post = get_object_or_404(Post, id=request.POST.get('post_id'))

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'website',
     'users',
     'chat',
-    'django_unicorn',
+    # 'django_unicorn',
     'friends',
 
 ]
