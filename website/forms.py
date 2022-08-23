@@ -1,7 +1,7 @@
 from django import forms
 # from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Post, MyUser, Reply_for_post
+from .models import Post, MyUser, Reply_for_post, Report_post
 #
 class UserRegisterForm(UserCreationForm):
 
@@ -40,6 +40,10 @@ class ReplyForm(forms.ModelForm):
         model = Reply_for_post
         fields = ['reply_content']
 
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report_post
+        fields = ['reason']
 # class CustomLoginForm(AuthenticationForm):
 #
 #   def __init__(self, *args, **kwargs):

@@ -36,7 +36,12 @@ class Profile(models.Model):
 @receiver(post_save, sender=MyUser)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance, first_name=instance.first_name, last_name=instance.last_name)
+        Profile.objects.create(user=instance, first_name=instance.first_name, last_name=instance.last_name)@receiver(post_save, sender=MyUser)
+@receiver(post_save, sender=Profile)
+def update_profile(sender, instance, created, **kwargs):
+    if not created:
+        MyUser.objects.filter(id=instance.id).update(first_name=instance.first_name, last_name=instance.last_name)
+        print("Profile updated!")
 
 
 # class CustomUser(AbstractUser):

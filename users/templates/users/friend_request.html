@@ -1,0 +1,23 @@
+{% extends 'website/base.html' %}
+
+{% block title %}
+{% include 'website/navbar.html' %}
+<title>Friend request</title>
+{% endblock title%}
+
+{% block content %}
+{% if show_friend_request.count > 0 %}
+        Current friend requests: <br><br>
+        {% for friend_request in show_friend_request %}
+                <a href="{% url 'profile' friend_request.from_user.id%}"><img class="small_profile_picture" src="{{friend_request.from_user.profile.profile_picture.url}}">
+                        {{friend_request.from_user.first_name}} {{friend_request.from_user.last_name}}</a> Want to add you as a friend!
+
+
+                        <a href="{% url 'accept_friend_request' friend_request.id%}" style="color:green;"> Accept</a>
+                        <a href="{% url 'decline_friend_request' friend_request.id%}" style="color:red;"> Decline</a>
+
+        {% endfor %}
+{%endif%}
+
+{% endblock %}
+

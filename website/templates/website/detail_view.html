@@ -5,58 +5,15 @@
 {% include 'website/navbar.html' %}
 
 
-<title xmlns="http://www.w3.org/1999/html"> Welcome to PyProfile! </title>
+    <title> Welcome to PyProfile! </title>
 {% endblock title %}
 
 
 
 {% block content %}
 
-<div class="index-left">
-    <a href="{% url 'friend_request'%}">Friends</a>
-</div>
-
-<div class="index-middle">
-<!--<div>-->
-    <span style="text-align:center;">
-     {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-    {% endif %}
-    </span>
-<!--    -->
-    <form method="POST">
-        {% csrf_token %}
-        <div id="add-post-div">
-
-        <div id="input-div-etc">
-        <input type='text' name='post_content' class='my-post-content-class' placeholder="What's up?"> <br><br>
-
-        </div>
-        <div id="emoji-button-etc">
-            <button type="submit" value="Publish" class="publish-post-button">Publish</button>
-        </div>
-        </div>
-    </form>
-<!--<div id="add-post-div">-->
-
-<!--    <div id="input-div-etc">-->
-<!--    <input  class="post-input" type="text" placeholder="Share a news with your friends!">-->
-
-<!--    </div>-->
-<!--    <div id="emoji-button-etc">-->
-<!--        <button class="publish-post-button" type="submit">Publish</button>-->
-<!--    </div>-->
-
-<!--</div>-->
-    <br/>
-<!-- Show posts    -->
-    {% for post in posts %}
-
-    <div class="post">
+    {% for post in detail_post%}
+ <div class="post">
 
         <div id="post-author">
         <img style='float: left;' class='small_profile_picture' src="{{ post.author.profile.profile_picture.url }}">
@@ -82,8 +39,7 @@
         <div class="dropdown-container" tabindex="-1">
         <div class="three-dots"></div>
     <div class="dropdown">
-<!--Report Post-->
-        <a href="{% url 'report_post' post.id%}"><div>Report</div></a>
+        <a href="#"><div>Report</div></a>
 
     </div>
     </div>
@@ -113,13 +69,10 @@
             {% endif %}
 <!--            If that shows who Liked post-->
             {% for likes in post.likes.all %}
-
-                <a href="{% url 'profile' likes.id %}" style="color: gold">
-                    {{likes.first_name}}
-                    {{likes.last_name}}
-                </a>
-
-
+            <span style="color: gold">
+                {{likes.first_name}}
+                {{likes.last_name}}
+            </span>
             {% endfor %}
 <!--            {{post.post_likes.all}}-->
         </div>
@@ -149,25 +102,7 @@
     <br><br><br>
 
     {% endfor %}
-
-
 </div>
-
-<div class="index-right">
-    Friends:
-    <br>
-    <br>
-    {% for friend in friends %}
-
-            <img class="small_profile_picture" src="{{friend.profile.profile_picture.url}}">
-                {{friend.first_name}}
-                {{friend.last_name}}
-    <br>
-
-
-    {% endfor %}
-</div>
-
 
 {% endblock content %}
 

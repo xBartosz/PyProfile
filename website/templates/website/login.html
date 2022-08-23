@@ -16,18 +16,25 @@
 
 
 
+{% if messages %}
+<ul class="messages" style="text-align:center; color:gold;">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</ul>
+{% endif %}
 <div class="login-div">
     <form method="POST">
     {%csrf_token%}
         <i class="fa fa-user-circle fa-2x" aria-hidden="true" style="color:white;">
         <input class="my-username-class" type="email" name="username" autofocus="" autocapitalize="none" autocomplete="username"
-            maxlength="150" class="my-username-class"  id="id_username" placeholder="Email"></i>
+            maxlength="150"   id="id_username" placeholder="Email"></i>
 
         <br>
 
         <i class="fa fa-lock fa-2x" aria-hidden="true" style="color:white; margin-top:15px;">
         <input class="my-password-class" type="password" name="password" autocomplete="current-password"
-               class="my-password-class"  id="id_password" placeholder="Password"></i>
+                 id="id_password" placeholder="Password"></i>
         <br>
 
 

@@ -11,20 +11,12 @@
 
 
 {% block content %}
-<div class="edit-post">
-    <h1>Edit your Post!</h1>
-    <br>
+
     <form method="POST">
         {% csrf_token %}
-        {{form_post.post_content}}
-
-
-
-        <br><br>
-
-        <button type="submit" class="button-standard" href="{% url 'detail_view' post.id%}">Update</button>
+        {{form_report}}
+        <input type="submit">
     </form>
-</div>
 
 {% endblock content %}
 

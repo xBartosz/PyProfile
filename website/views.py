@@ -4,14 +4,15 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 import users.models
 from django.http import HttpResponseRedirect
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from .forms import UserRegisterForm, PostForm, ReplyForm, PostLike
+from .forms import UserRegisterForm, PostForm, ReplyForm, PostLike, ReportForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post, MyUser, Reply_for_post
+from .models import Post, MyUser, Reply_for_post, Report_post
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 from django.contrib import messages
@@ -36,28 +37,57 @@ class RegisterFunction(FormView):
         return super(RegisterFunction, self).get(request, *args, **kwargs)
 
 
-class LoginFunction(LoginView):
-    template_name = 'website/login.html'
-    redirect_authenticated_user = True
-    next_page = 'index'
+# class LoginFunction(LoginView):
+#     template_name = 'website/login.html'
+#     redirect_authenticated_user = True
+#     next_page = 'index'
+
+def login_user(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+    else:
+        if request.method == "POST":
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('index')
+            else:
+                messages.success(request, ("Wrong password or login"))
+                return redirect('login')
+        else:
+            return render(request, 'website/login.html')
+
+@login_required(login_url='login')
+def detail_view(request, pk):
+    detail_post = Post.objects.filter(id=pk)
 
 
+    context = {'detail_post' : detail_post}
+
+    return render(request, 'website/detail_view.html', context)
 
 @login_required(login_url='login')
 def index(request):
     get_id = request.POST.get("post_id")
-    get_id2 = request.POST.get("id_post")
 
 
-    friends = users.models.Profile.objects.exclude(id=request.user.id)
-    posts = Post.objects.all().order_by('-post_date')
-
+#if author is friend
+    friends = request.user.friends.all()
+    # posts = Post.objects.all().order_by('-post_date')
+    # print(friends)
+    # posts1 = Q(author__contains=friends)
+    # posts2 = Q(author_contains=request.user)
+    # print(posts1)
+    posts = Post.objects.filter(Q(author__in=friends) | Q(author=request.user)).order_by('-post_date')
+    # print(posts1)
+    # print(posts)
 
     form_post = PostForm(request.POST or None)
     form_reply = ReplyForm(request.POST or None)
 
 
-    liked = False
 
 
 
@@ -76,26 +106,54 @@ def index(request):
 
 
 
-    context = {'friends': friends, 'form_post': form_post, 'posts': posts, 'liked' : liked
-               }
+    context = {'friends': friends, 'form_post': form_post, 'posts': posts}
     return render(request, 'website/index.html', context)
 
+@login_required(login_url='login')
 def delete_post(request, id):
-    post = Post.objects.get(id=id)
-    post.delete()
-    return redirect('index')
 
+    post = Post.objects.get(id=id)
+    if post.author == request.user:
+        post.delete()
+        return redirect('index')
+    else:
+        return redirect('index')
+
+@login_required(login_url='login')
 def update_post(request, id):
     post = Post.objects.get(id=id)
-    form_post = PostForm(request.POST or None, instance=post)
-
+    form_post = PostForm(request.POST or None)
+    # form_post.post_content = Post.objects.values_list('post_content').get(id=id)
+    # print(form_post.post_content)
     if form_post.is_valid():
-        form_post.save()
-        return redirect('index')
+        if request.user == post.author:
+            form_post.save()
+            return HttpResponseRedirect(reverse('detail_view', args=[id]))
+
+        else:
+            return redirect('index')
 
     context = {'form_post' : form_post, 'post' : post}
     return render(request, 'website/update_post.html', context)
 
+def Report_function(request, id):
+
+    form_report = ReportForm(request.POST or None)
+    form_report.instance.post = Post.objects.get(id=id)
+    form_report.instance.applicant = request.user
+    if request.method == "POST":
+        if form_report.is_valid():
+            if Report_post.objects.filter(post=id, applicant=form_report.instance.applicant, reason=form_report.instance.reason).exists():
+                messages.success(request, ("Post already reported!"))
+                return redirect('index')
+            else:
+                form_report.save()
+                messages.success(request, ("Post Reported successfully"))
+                return redirect('index')
+    context = {'form_report' : form_report}
+    return render(request, 'website/report_post.html', context)
+
+@login_required(login_url='login')
 def like_post(request, id):
     post = get_object_or_404(Post, id=request.POST.get("post_id_like"))
     liked = False
@@ -106,7 +164,33 @@ def like_post(request, id):
         post.likes.add(request.user)
         liked = True
 
+    # Changed because after like in profile redirected to the index page
     return HttpResponseRedirect(reverse('index'))
+
+# class Report_for_post(CreateView):
+#     model = Report_post
+#     form_class = ReportForm
+#     # fields = ['post', 'reason']
+#     template_name = 'website/report_post.html'
+#     success_url = reverse_lazy('index')
+#
+#     print(form_class)
+    # def form_valid(self, form):
+    #     form.instance.post = Post.objects.get(id=id)
+    #     ReportForm.save()
+    #     print(form.instance.Post)
+    #     return super(Report_for_post, self).form_valid(form)
+
+# def Report_for_post(request, id):
+#     post = Post.objects.get(id=id)
+#     form_report = ReportForm(request.POST or None)
+#     if form_report.is_valid:
+#         form_report.instance = post
+#
+#         form_report.save()
+#         return redirect('index')
+#     context = {'form_report' : form_report}
+#     return render(request, 'website/report_post.html', context)
 
     #
     # def mount(self):

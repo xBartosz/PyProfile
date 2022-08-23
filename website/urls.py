@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginFunction, RegisterFunction, index, delete_post, update_post, like_post
+from .views import login_user, RegisterFunction, index, delete_post, update_post, like_post, detail_view, Report_function
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views as auth_views
 
@@ -8,7 +8,7 @@ urlpatterns = [
     path('', index, name='index'),
 
 
-    path('login/', LoginFunction.as_view(), name='login'),
+    path('login/', login_user, name='login'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('register/', RegisterFunction.as_view(), name='register'),
 
@@ -19,6 +19,8 @@ urlpatterns = [
 
     path('delete_post/<int:id>', delete_post, name='delete_post'),
     path('update_post/<int:id>', update_post, name='update_post'),
-    path('like/<int:id>', like_post, name='like_post')
+    path('report_post/<int:id>', Report_function, name='report_post'),
+    path('like/<int:id>', like_post, name='like_post'),
+    path('detail_view/<int:pk>', detail_view, name='detail_view'),
     # path('like/<int:pk>', LikeView, name='like_post'),
 ]

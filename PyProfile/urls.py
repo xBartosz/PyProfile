@@ -26,4 +26,4 @@ urlpatterns = [
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns.append(path('unicorn/', include("django_unicorn.urls")))
+# urlpatterns.append(path('unicorn/', include("django_unicorn.urls")))
