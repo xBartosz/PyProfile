@@ -11,12 +11,13 @@
 
 
 {% block content %}
-
+<div class="report-post">
     <form method="POST">
         {% csrf_token %}
-        {{form_report}}
-        <input type="submit">
+        <p>Reason:</p> {{form_report.reason}}
+        <button type="submit" class="button-standard">Report</button>
     </form>
+</div>
 
 {% endblock content %}
 

@@ -5,20 +5,24 @@
     {% endblock title %}
 
 {% block content %}
-{% if search %}
-<div id="search-users-div">
 
-    You Searched for "{{search}}": <br><br><br>
+<p class="search-for-paragraph">You Searched for <span style="color: gold">{{search}}</span>:</p>
+<div class="search-users-entire-div">
     {% for users_result in users_results %}
-
-        <a href="{% url 'profile' users_result.id %}"><img alt="picture" style="margin-top: 40px;" class="small_profile_picture" src="{{users_result.profile_picture.url}}">
-            {{users_result}}</a>
+    <div class="search-all-users">
+        <div class="search-users-image">
+            <a href="{% url 'profile' users_result.user.user_name %}">
+                <img class="medium-profile-picture" src="{{users_result.profile_picture.url}}">
+            </a>
+        </div>
+        <div class="search-users-name">
+            <a href="{% url 'profile' users_result.user.user_name %}">
+                {{users_result}}
+            </a>
+        </div>
+    </div>
 
     {% endfor %}
 </div>
-{% else %}
-
-    Hey you forgot, you searched for ..
-{% endif %}
 
 {% endblock content %}

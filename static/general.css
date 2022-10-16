@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+
+/** {*/
+/*    font-family: 'Montserrat', sans-serif;*/
+/*}*/
+
+html {
+    font-family: 'Montserrat', sans-serif;
+    color: whitesmoke;
+    padding: 0;
+    margin: 0;
+}
+p {
+    margin:0;
+    padding: 0;
+}
+body {
+    padding-top: 85px;
+    background-color: #24273b;
+}
+
+
+a {
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+
+.alert {
+    padding: 20px;
+    background-color: darkgrey;
+    color: white;
+    position: fixed;
+    top: 100px;
+    left:50%;
+    transform:translate(-50%, 0);
+    text-align: center;
+    border-radius: 5px;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #1b86f9 #24273b;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #24273b;
+  }
+
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #1b86f9;
+    border-radius: 6px;
+    /*border: 1px none #6c6565;*/
+  }

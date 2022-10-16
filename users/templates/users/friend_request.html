@@ -7,17 +7,37 @@
 
 {% block content %}
 {% if show_friend_request.count > 0 %}
-        Current friend requests: <br><br>
+
+<div class="friend-requests-title">
+        <h2>Current friend requests:</h2>
+</div>
+<div class="friend-requests-entire">
         {% for friend_request in show_friend_request %}
-                <a href="{% url 'profile' friend_request.from_user.id%}"><img class="small_profile_picture" src="{{friend_request.from_user.profile.profile_picture.url}}">
-                        {{friend_request.from_user.first_name}} {{friend_request.from_user.last_name}}</a> Want to add you as a friend!
+        <div class="friend-request">
+                <div class="friend-request-image">
+                        <a href="{% url 'profile' friend_request.request_from_user.user_name%}">
+                        <img class="medium-profile-picture" src="{{friend_request.request_from_user.profile.profile_picture.url}}">
+                        </a>
+                </div>
+                <div class="friend-request-name">
+                        <a href="{% url 'profile' friend_request.request_from_user.user_name%}">
+                        <p>{{friend_request.request_from_user.first_name}} {{friend_request.request_from_user.last_name}}</p>
+                        </a>
+                </div>
 
+                <p>Sent you a friend request <span style="color: #da9f5d">({{friend_request.created_date|timesince}} ago)</span></p>
 
-                        <a href="{% url 'accept_friend_request' friend_request.id%}" style="color:green;"> Accept</a>
-                        <a href="{% url 'decline_friend_request' friend_request.id%}" style="color:red;"> Decline</a>
+                <a href="{% url 'accept_friend_request' friend_request.id%}" style="color:#0f8c0f; margin-right: 10px;"> Accept</a>
+                <a href="{% url 'decline_friend_request' friend_request.id%}" style="color:red;"> Decline</a>
+        </div>
 
         {% endfor %}
-{%endif%}
+</div>
+{% else %}
+<div class="friend-requests-title">
+        <h2>You've got no friend requests!</h2>
+</div>
+{% endif %}
 
 {% endblock %}
 

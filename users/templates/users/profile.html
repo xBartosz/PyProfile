@@ -6,146 +6,121 @@
 
 
 {% block content %}
+<div class="container">
+  <div class="profile-header">
+    <div class="profile-img">
+      <img src="{{profiles.profile_picture.url}}" width="200" alt="Profile Image">
+    </div>
+    <div class="profile-nav-info">
+      <h3 class="user-name">{{profiles.first_name}} {{profiles.last_name}}</h3>
+      <div class="address">
+        {% if profiles.comes_from %}
+          <p id="state" class="state"><i class="fa-solid fa-city" style="color: white;"></i> {{profiles.comes_from}}</p>
+        {%endif%}
+<!--        <span id="country" class="country">{% if profiles.birth_date %}{{profiles.birth_date}}{% endif %}</span>-->
+      </div>
 
-<br>
-    <span style="font-family: Montserrat; color:white;">
-        <img src="{{profiles.profile_picture.url}}" class="mediun_profile_picture">
-        <h2>
-        {{profiles.first_name}}
-        {{profiles.last_name}}<br>
+    </div>
+  </div>
 
-        {{profiles.user.email}}
+  <div class="main-bd">
+    <div class="left-side">
+      <div class="profile-side">
+        <p class="mobile-no"><i class="fa fa-phone" style="color: white;"></i> {{profiles.mobile}}</p>
+        <p class="user-mail"><i class="fa fa-envelope" style="color: white;"></i> {{profiles.user.email}}</p>
+        {% if profiles.gender == "Male" %}
+          <p class="user-mail"><i class="fa fa-mars" style="color: white;"></i> Male</p>
+        {% elif profiles.gender == "Female" %}
+          <p class="user-mail"><i class="fa fa-venus" style="color: white;"></i> Female</p>
+        {% endif %}
 
-
-            <br>
-
-            {% if request.user.id != profiles.id and Friend_Request_exists == False and is_friend == False%}
+        {% if profiles.birth_date %}
+          <p class="user-birth-date"><i class="fa fa-cake-candles" style="color: white;"></i> {{profiles.birth_date}}</p>
+        {% endif %}
+        <div class="user-about-me">
+          <h3>About me</h3>
+          <p class="about-me">
+            {% if profiles.about_me %}
+              {{profiles.about_me}}
+            {% else %}
+              Welcome to my profile  <i class="fa fa-face-smile" style="color: white;"> </i>
+            {% endif %}
+          </p>
+        </div>
+        {% if profiles.user == request.user %}
+        {% else %}
+        <div class="profile-btn">
+          <a href="{% url 'chatroom' profiles.user.user_name%}" type="button" class="chatbtn" id="chatBtn"><i class="fa fa-comment" style="color: white;"></i> Chat</a>
+<!--          Start -->
+          {% if request.user.id != profiles.id and Friend_Request_sent_exists == False and Friend_Request_received_exists == False and is_friend == False %}
             <form action="{% url 'send_friend_request' profiles.id%}" method="POST">
                 {% csrf_token %}
-            <button type="submit">Send Friend Request</button>
+              <button type="submit" class="createbtn-green"><i class="fa fa-plus" style="color: white;"></i> Add to friend</button>
+            </form>
+            {% elif Friend_Request_sent_exists == True %}
+                {% for req in Friend_Request_sent %}
+                <form action="{% url 'cancel_friend_request' req.id %}" method="POST">
+                  {% csrf_token %}
+<!--                  <input type="hidden" name="profile_username" value="{{profiles.user.user_name}}">-->
+                    <button type="submit" class="createbtn"> <i class="fa fa-user" style="color: white;"></i>Cancel request</button>
+                  </form>
+                {%endfor%}
+            {% elif Friend_Request_received_exists == True %}
+              {% for req in Friend_Request_received %}
+                <form action="{% url 'accept_friend_request' req.id %}" method="POST">
+                  {% csrf_token %}
+<!--                  <input type="hidden" name="profile_username" value="{{profiles.user.user_name}}">-->
+                    <button type="submit" class="createbtn-green"> <i class="fa fa-check" style="color: white;"></i>Accept request</button>
                 </form>
-
-            {% elif Friend_Request_exists %}
-
-                {% for req in Friend_request_show %}
-            <form action="{% url 'cancel_friend_request' req.id %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="profile_id" value="{{profiles.id}}">
-
-
-                    <input type="submit" value="Cancel">
+                <form action="{% url 'decline_friend_request' req.id %}" method="POST" style="margin-left: 5px;">
+                  {% csrf_token %}
+<!--                  <input type="hidden" name="profile_username" value="{{profiles.user.user_name}}">-->
+                    <button type="submit" class="createbtn"> <i class="fa fa-x" style="color: white;"></i>Decline request</button>
                 </form>
                 {%endfor%}
             {%elif request.user.id == profiles.id%}
             {%else%}
-            That's your friend!
-            <form action="{% url 'delete_friend' profiles.id %}" method="POST">
+
+            <form action="{% url 'delete_friend' profiles.id %}" class="reset" method="POST">
                 {% csrf_token %}
-                <input type="submit" value="Delete Friend">
+                <button type="submit" class="createbtn"><i class="fa fa-user-slash" style="color: white;"><br></i>Delete friend</button>
 
             </form>
             {% endif %}
-
-
-
-
-        </h2>
-    </span>
-
-<br>
-
-    <!-- Show posts    -->
-    {% for post in user_posts %}
-
-    <div class="post">
-
-        <div id="post-author">
-        <img style='float: left;' class='small_profile_picture' src="{{ post.author.profile.profile_picture.url }}">
-
-
-        <span style="float:left;">
-            <a href="{% url 'profile' post.author.id %}">
-                <h4 style="padding-left: 10px;"> {{ post.author.first_name }}  {{ post.author.last_name }} </h4>
-            </a>
-        </span>
+<!--          End-->
         </div>
-
-        <!--Delete/Update - 3dots -->
-
-    <div class="dropdown-container" tabindex="-1">
-        <div class="three-dots"></div>
-    <div class="dropdown">
-        <a href="{% url 'delete_post' post.id %}"><div>Delete</div></a>
-        <a href="{% url 'update_post' post.id %}"><div>Update</div></a>
-    </div>
-    </div>
-
-        <br>
-        <div class="post-text">
-            <span style="text-align: center;"><h2>{{ post.post_content }}</h2></span>
-            <hr style="opacity:30%;">
-<!--            <i class="fa fa-thumbs-up fa-2x" aria-hidden="true" style="float:left; padding-left: 10px; margin-right: 10px; color:whitesmoke;"></i>-->
-            <form action="{% url 'like_post' post.id %}" method="post">
-                {% csrf_token %}
-                <!--            If that check if currently logged user like post-->
-            {% if user not in post.likes.all%}
-                <button type="submit" class="like-btn-without-bg" name="post_id_like" value="{{post.id}}" style="color: white">Like <i class="fa-regular fa-thumbs-up" style="color:white;"></i></button>
-            {%else%}
-                <button type="submit" class="like-btn-without-bg" name="post_id_like" value="{{post.id}}" style="color: Green;">You liked that! <i class="fa-regular fa-thumbs-up" style="color:Green;"></i></button>
-            {%endif%}
-
-            </form>
-
-
-<!--            If that counts Likes-->
-            {% if post.likes.all.count == 1 %}
-                {{post.likes.all.count}} Like
-            {% else %}
-                {{post.likes.all.count}} Likes
-            {% endif %}
-<!--            If that shows who Liked post-->
-            {% for likes in post.likes.all %}
-            <a href="{% url 'profile' likes.id %}" style="color: gold">
-                    {{likes.first_name}}
-                    {{likes.last_name}}
-                </a>
-            {% endfor %}
-<!--            {{post.post_likes.all}}-->
+        {% endif %}
+        <div class="user-friends">
+          <div class="friend">
+            <span class="no-of-user-friend">
+              {% if profiles.user.friends.count == 1 %}
+                <a href="{% url 'friend_list' profiles.user.user_name %}"><i class="fa fa-user-group" style="color: white;"></i> {{profiles.user.friends.count}} Friend</a>
+              {% else %}
+                <a href="{% url 'friend_list' profiles.user.user_name %}"><i class="fa fa-user-group" style="color: white;"></i> {{profiles.user.friends.count}} Friends</a>
+              {% endif %}
+            </span>
+            <span class="no-of-user-posts" style="padding-left: 30px;">
+              {% if user_posts == 1 %}
+                <a href="{% url 'post_list' profiles.user.user_name %}"><i class="fa fa-newspaper" style="color: white;"></i> {{user_posts}} Post</a>
+              {% else %}
+                <a href="{% url 'post_list' profiles.user.user_name %}"><i class="fa fa-newspaper"style="color: white;"></i> {{user_posts}} Posts</a>
+              {% endif %}
+            </span>
+          </div>
         </div>
-
-
-<!--    Add a comment to the post -->
-        <form method="post">
-            {%csrf_token%}
-            <input type="hidden" name="post_id" value="{{post.id}}">
-            <input  type="text" name="reply_content"  class="my-reply-content-class" placeholder="Add a comment">
-            <button type="submit" hidden="True">Add</button>
-        </form>
-
-
-<!-- Show comments  -->
-        {% for replies in post.comments.all %}
-            <p>{{replies.reply_date|timesince}} ago</p>
-                <a href="{% url 'profile' replies.reply_author.id %}">
-                    {{replies.reply_author.first_name}}
-                    {{replies.reply_author.last_name}}
-                    <img class='small_profile_picture' src="{{ replies.reply_author.profile.profile_picture.url }}">
-                </a>
-            <span style="color:gold;">{{replies.reply_content}}</span>
-        {% endfor %}
+      </div>
 
     </div>
-    <br><br><br>
-
-
-
-
+    <div class="right-side">
+<!--      <div class="profile-body">-->
+<!--        <div class="profile-posts">-->
+<!--          <h1>Your Post</h1>-->
+<!--          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa quia sunt itaque ut libero cupiditate ullam qui velit laborum placeat doloribus, non tempore nisi ratione error rem minima ducimus. Accusamus adipisci quasi at itaque repellat sed-->
+<!--            magni eius magnam repellendus. Quidem inventore repudiandae sunt odit. Aliquid facilis fugiat earum ex officia eveniet, nisi, similique ad ullam repudiandae molestias aspernatur qui autem, nam? Cupiditate ut quasi iste, eos perspiciatis maiores-->
+<!--            molestiae.</p>-->
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+  </div>
 </div>
-
-
-    </div>
-
-<br><br><br>
-
-    {% endfor %}
 {% endblock content %}

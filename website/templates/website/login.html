@@ -1,4 +1,4 @@
-{% extends 'website/base.html' %}
+{% extends 'website/base-not-logged-in.html' %}
 {% load static %}
 
 {% block title %}
@@ -7,52 +7,28 @@
 
 {% block content %}
 
+<div class="entire-div">
+    <div class="top-div">
+        <img class="pyprofile-logo-login" src="{% static 'PyProfile.png' %}">
 
+    </div>
+    <div class="middle-div">
+        <form method="POST">
+            {%csrf_token%}
+                <i class="fa fa-user-circle fa-2x" aria-hidden="true" style="color:white;">
+                <input class="login-input" name="email" type="email">
+                </i>
+                <i class="fa fa-lock fa-2x" aria-hidden="true" style="color:white;">
+                <input class="password-input" name="password" type="password">
+                </i>
+                <button type="submit" class="login-button">Login</button>
+        </form>
 
+        <p class="paragraph-under-login">Don't you have an account yet? Click <a href="{% url 'register' %}" style="color:gold;">Here</a></p>
+        <p>Forgot your password? Click <a href="{% url 'reset_password' %}" style="color:gold;">Here</a></p>
 
-<div id="PyProfile-logo">
-        <img class="PyProfile_main_website" src="{% static 'PyProfile.png' %}">
+    </div>
+
 </div>
-
-
-
-{% if messages %}
-<ul class="messages" style="text-align:center; color:gold;">
-    {% for message in messages %}
-    {{ message }}
-    {% endfor %}
-</ul>
-{% endif %}
-<div class="login-div">
-    <form method="POST">
-    {%csrf_token%}
-        <i class="fa fa-user-circle fa-2x" aria-hidden="true" style="color:white;">
-        <input class="my-username-class" type="email" name="username" autofocus="" autocapitalize="none" autocomplete="username"
-            maxlength="150"   id="id_username" placeholder="Email"></i>
-
-        <br>
-
-        <i class="fa fa-lock fa-2x" aria-hidden="true" style="color:white; margin-top:15px;">
-        <input class="my-password-class" type="password" name="password" autocomplete="current-password"
-                 id="id_password" placeholder="Password"></i>
-        <br>
-
-
-
-        <input type="submit" id="login-button" value="Login" style="margin: 50px 0px 40px 50px;">
-        </br>
-        </br>
-        <span style="font-size:17px; margin-left:30px; color:white;">Don't you have an account yet? Click <a href="{% url 'register' %}" style="color:gold;">here</a></span>
-        <br><br>
-        <span style="font-size:17px; margin-left:30px; color:white;">Forgot your password? Click <a href="{% url 'reset_password' %}" style="color:gold;">here</a></span>
-
-    </form>
-
-    </div>
-
-    </form>
-
-    </div>
-
 
 {% endblock content %}

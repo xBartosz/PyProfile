@@ -2,12 +2,15 @@ from django import forms
 # from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Post, MyUser, Reply_for_post, Report_post
-#
+
+
 class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = MyUser
-        fields = ['email', 'first_name', 'last_name', 'mobile']
+        fields = ['email', 'first_name', 'last_name']
+        # fields = UserCreationForm.Meta.fields + ('email', 'user_name', 'first_name', 'last_name')
+
 
 
 class PostForm(forms.ModelForm):
@@ -66,9 +69,6 @@ class CustomRegisterForm(AuthenticationForm):
         )
         self.fields['last_name'].widget.attrs.update(
             {'class': 'my-lastname-class'}
-        )
-        self.fields['mobile'].widget.attrs.update(
-            {'class': 'my-mobile-class'}
         )
         self.fields['password1'].widget.attrs.update(
             {'class': 'my-password1-class'}

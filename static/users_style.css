@@ -1,0 +1,414 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Bree+Serif&display=swap");
+
+
+.container {
+    padding-top: 90px;
+    margin: 0 100px;
+
+}
+
+.profile-header {
+  background: #151728;
+  width: 100%;
+  display: flex;
+  height: 190px;
+  position: relative;
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+.profile-img {
+  float: left;
+  width: 340px;
+  height: 200px;
+}
+
+.profile-img img {
+  border-radius: 50%;
+  height: 230px;
+  width: 230px;
+  border: 5px solid #fff;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  left: 50px;
+  top: 20px;
+  z-index: 5;
+  background: #151728;
+}
+
+.profile-nav-info {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.profile-nav-info h3 {
+  font-variant: small-caps;
+  font-size: 2rem;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+.profile-nav-info .address {
+  display: flex;
+  font-weight: bold;
+  /*color: #777;*/
+  color: rgb(228, 255, 255);
+}
+
+.profile-nav-info .address p {
+  margin-right: 5px;
+}
+
+
+
+
+
+
+.main-bd {
+  width: 100%;
+  display: flex;
+  padding-right: 15px;
+}
+
+.profile-side {
+  width: 300px;
+  background: #151728;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+  padding: 90px 30px 20px;
+  font-family: "Bree Serif", serif;
+  margin-left: 10px;
+  z-index: 99;
+}
+
+.profile-side p {
+  margin-bottom: 7px;
+  color: rgb(228, 255, 255);
+  font-size: 14px;
+}
+
+.profile-side p i {
+  color: rgb(228, 255, 255);
+  margin-right: 10px;
+}
+
+.mobile-no i {
+  transform: rotateY(180deg);
+  color: rgb(228, 255, 255);
+}
+
+.profile-btn {
+  display: flex;
+}
+
+
+a.chatbtn,
+button.createbtn, button.createbtn-green {
+  border: 0;
+  padding: 10px;
+  width: 100%;
+  border-radius: 3px;
+  background: #e40046;
+  color: rgb(228, 255, 255);
+  font-family: "Bree Serif";
+  font-size: 1rem;
+  margin: 5px 2px;
+  cursor: pointer;
+  outline: none;
+  margin-bottom: 10px;
+  transition: background 0.3s ease-in-out;
+  box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.3);
+}
+
+button.createbtn-green {
+  background-color: green;
+}
+/*a.chatbtn {*/
+/*  font-size: 1.5rem;*/
+/*  padding-top:1.5rem;*/
+/*  text-align:center;*/
+/*  background: deepskyblue;*/
+/*}*/
+/*a.chatbtn:hover,*/
+/*button.createbtn:hover {*/
+/*  !*background: rgba(288, 0, 70, 0.9);*!*/
+/*}*/
+
+a.chatbtn i,
+button.createbtn i {
+  margin-right: 5px;
+}
+
+.friend {
+  padding-top: 6px;
+}
+
+.friend i {
+  font-size: 0.9rem;
+  /*color: rgba(228, 0, 70, 1);*/
+}
+
+.nav {
+  width: 100%;
+  z-index: -1;
+}
+
+/*.nav ul {*/
+/*  display: flex;*/
+/*  justify-content: space-around;*/
+/*  list-style-type: none;*/
+/*  height: 40px;*/
+/*  background: red;*/
+/*  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);*/
+/*}*/
+
+/*.nav ul li {*/
+/*  padding: 10px;*/
+/*  width: 100%;*/
+/*  cursor: pointer;*/
+/*  text-align: center;*/
+/*  transition: all 0.2s ease-in-out;*/
+/*}*/
+
+
+
+.profile-body {
+  width: 100%;
+  z-index: -1;
+}
+
+/*.tab {*/
+/*  display: none;*/
+/*}*/
+
+/*.tab {*/
+/*  padding: 20px;*/
+/*  width: 100%;*/
+/*  text-align: center;*/
+/*}*/
+
+@media (max-width: 1100px) {
+  .profile-side {
+    width: 250px;
+    padding: 90px 15px 20px;
+  }
+
+  .profile-img img {
+    height: 200px;
+    width: 200px;
+    left: 50px;
+    top: 50px;
+  }
+}
+
+@media (max-width: 900px) {
+  body {
+    margin: 0 20px;
+  }
+
+  .profile-header {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    text-align: center;
+    padding-bottom: 20px;
+  }
+
+  .profile-img {
+    float: left;
+    width: 100%;
+    height: 200px;
+  }
+
+  .profile-img img {
+    position: relative;
+    height: 200px;
+    width: 200px;
+    left: 0px;
+  }
+
+  .profile-nav-info {
+    text-align: center;
+  }
+
+  .main-bd {
+    flex-direction: column;
+    padding-right: 0;
+  }
+
+  .profile-side {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    margin: 5px 0;
+  }
+
+  .profile-nav-info .address {
+    justify-content: center;
+  }
+
+  .user-friends {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 400px) {
+  body {
+    margin: auto;
+  }
+
+  .profile-header h3 {
+  }
+
+
+  .profile-nav-info h3 {
+    font-size: 1.9rem;
+  }
+
+  .profile-nav-info .address p,
+  .profile-nav-info .address span {
+    font-size: 0.7rem;
+  }
+}
+
+/*PROFILE SETTINGS*/
+.profile-settings-entire-div {
+  text-align: center;
+}
+
+.edit-profile input[type=text], .edit-profile input[type=date],
+.edit-profile textarea{
+    border: none;
+    outline: none;
+    height:54px;
+    border-radius:22px;
+    padding:0 18px;
+    color:whitesmoke;
+    background-color: #151728;
+    margin-left: 10px;
+    margin-top:30px;
+    font-size:15px;
+    margin-bottom: 25px;
+    vertical-align: middle;
+}
+.edit-profile textarea {
+    padding-top: 20px;
+    height: 100px;
+    resize: none;
+
+}
+
+.edit-profile input[type=date]::-webkit-calendar-picker-indicator {
+    background-color: white;
+    border-radius: 5px;
+}
+
+.save-button {
+    background-color:#151728;
+    border: none;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    /*box-shadow: 0 0 20px #212F3D;*/
+    cursor: pointer;
+}
+
+/*SEARCH USERS*/
+.search-users-entire-div {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-left: 20%;
+  margin-right: 20%;
+  padding-top: 30px;
+  align-items:center;
+}
+.search-for-paragraph {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-all-users {
+  text-align: center;
+
+}
+.search-users-image, .search-users-name {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.search-users-name {
+  padding-left: 15px;
+}
+
+/*FRIEND REQUESTS*/
+
+.friend-requests-entire {
+  display: grid;
+  grid-template-columns: 1fr;
+  /*align-items: center;*/
+  justify-content: center;
+}
+.friend-requests-title {
+  text-align: center;
+}
+
+.friend-request {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.friend-request-image, friend-request-name {
+  display: inline-block;
+  /*vertical-align: middle;*/
+  /*text-align: center;*/
+}
+
+.friend-request-name p {
+  color: gold;
+}
+
+/*POST LIST*/
+
+.post-list {
+    position: absolute;
+    margin-top: 30px;
+    left: 50%;
+    transform: translate(-50%);
+    width:50%;
+}
+
+.post-list-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/*FRIEND LIST*/
+.friend-list-title {
+  text-align: center;
+}
+
+.friend-list-entire-div {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20%;
+  margin-left: 20%;
+}
+.friend-list-single {
+  padding-top: 20px;
+}
+.friend-list-image, .friend-list-name {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.friend-list-name {
+  padding-left: 15px;
+}

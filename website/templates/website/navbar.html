@@ -1,36 +1,29 @@
 {% load static %}
-<head>
-    <link rel="icon" href="https://d29fhpw069ctt2.cloudfront.net/icon/image/84627/preview.svg" type="image/x-icon">
-</head>
-<div class="navbar">
 
-<a href="{% url 'index' %}"><img src="{% static 'PyProfile.png' %}" style='width:300px; height:auto; float:left; padding-top: 5px;' alt="logo"></a>
+<div class="navbar-entire-div">
+    <div class="left-section">
+        <a href="{% url 'index' %}"><img class="pyprofile-logo" src="{% static 'PyProfile.png' %}" alt="logo"></a>
+    </div>
+    <div class="middle-section">
+        <i class="fa fa-search" class="loupe-icon" aria-hidden="true" style="color: #5c5d71;"></i>
+        <form class="search-form" method="post" action="{% url 'search_users' %}">
+            {% csrf_token %}
+            <input class="search-bar" type="search" placeholder="Search friends" name="search">
+            <button type="submit" hidden="hidden">Submit</button>
+        </form>
+    </div>
+    <div class="right-section">
+        <img class="current-user-avatar" src="{{ request.user.profile.profile_picture.url }}">
+        <p class="current-user-name"><a href="{% url 'profile' user.user_name %}">{{user.first_name}} {{user.last_name}}</a></p>
 
-    <form class="form-search" method="post" action="{% url 'search_users' %}">
-        {% csrf_token %}
-        <div id="search-friends">
-        <i class="fa fa-search" aria-hidden="true" style="color: #5c5d71; float:left; padding: 5.5%;"></i>
 
-            <input type="search" class="input-search-friends" placeholder="Search friends" name="search">
-            <button type="submit" class="button-standard" hidden="hidden" style="float:left;">Submit</button>
-        </div>
-    </form>
-
-
-        <img class='small_profile_picture' style="float:left; margin-top: 1.5em;" src="{{ user.profile.profile_picture.url }}">
-        <span style="padding: 2.5em 0 0 1em; float:left;">
-            <a href="{% url 'profile' user.id %}">{{user.first_name}} {{user.last_name}}</a>
-        </span>
-
-<br><br>
+        <div class="menu-item"></div>
             <div class="dropdown-container" tabindex="-1">
                 <div class="three-dots"></div>
-                    <div class="dropdown-navbar">
-                        <a href="{%url 'logout'%}" style="padding-left: 20px; color:gold;"><div>Logout</div></a>
-                        <a href="{% url 'profile_settings' %}" style="float:right;"><div>Settings</div></a>
-                    </div>
+                <div class="dropdown">
+                    <a href="{%url 'logout'%}"><div class="bg">Logout</div></a>
+                    <a href="{% url 'profile_settings' %}"><div class="bg">Settings</div></a>
+              </div>
             </div>
-
-
-
+        </div>
 </div>

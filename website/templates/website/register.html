@@ -1,28 +1,33 @@
-{% extends 'website/base.html' %}
+{% extends 'website/base-not-logged-in.html' %}
 {% load static %}
 {% block title %}
 <title>PyProfile - Join us!</title>
 {% endblock title %}
 
 {% block content %}
-<div id="PyProfile-logo-register">
-        <img class="PyProfile_main_website" src="{% static 'PyProfile.png' %}">
-</div>
+<div class="entire-div">
+    <div class="top-div">
+        <img class="pyprofile-logo-login" src="{% static 'PyProfile.png' %}">
+    </div>
 
-    <div id="register-div">
+    <div class="middle-register-div">
     <form method="post">
         {%csrf_token%}
-            Email: <br>{{form.email}} <br><br>
-            First name:<br><input type='text' name='first_name' class='my-firstname-class'> <br><br>
-            Last name:<br><input type='text' name='last_name' class='my-lastname-class'> <br><br>
-            Mobile: <br><input type='text' name='mobile' class='my-mobile-class'> <br><br>
-            Password: <br>{{form.password1}} <br><br>
-            Password confirmation: <br>{{form.password2}} <br><br>
+        <p>Email:</p>
+        <input type="email" name="email" class="register-input">
+            <p>First name:</p>
+        <input type='text' name='first_name' class='register-input'>
+            <p>Last name:</p>
+        <input type='text' name='last_name' class='register-input'>
+            <p>Password:</p>
+        <input type="password" name="password1" class="register-input">
+            <p>Password confirmation:</p>
+        <input type="password" name="password2" class="register-input">
 
         <input class='register-button' type="submit" value="Register">
     </form>
-        <br>
-        Click <a href="{%url 'login'%}" style="color:gold;">here</a> to login!
+        <p>Click <a href="{% url 'login' %}" style="color:gold;">Here</a> to login!</p>
     </div>
+</div>
 
 {% endblock content %}

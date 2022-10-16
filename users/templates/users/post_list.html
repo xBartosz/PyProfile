@@ -1,37 +1,18 @@
 {% extends 'website/base.html' %}
 {% load static %}
-
 {% block title %}
 {% include 'website/navbar.html' %}
-
-
-<title xmlns="http://www.w3.org/1999/html"> Welcome to PyProfile! </title>
-{% endblock title %}
-
-
-
+<title>{{user_being_viewed.first_name}} {{user_being_viewed.last_name}} - Posts</title>
+<!--<link rel="stylesheet" type="text/css" href="{% static 'chat_style.css' %}">-->
+{% endblock title%}
 
 {% block content %}
-{% include 'website/sidebar.html' %}
-<div class="entire-index-div">
-    <div class="index-left">
-        <a href="{% url 'friend_request'%}">Friend's requests</a> <br>
-        <a href="{% url 'chat' %}">Chat</a>
-    </div>
 
-    <div class="index-middle">
-        <div class="add-post-div">
-          <form method="POST">
-              {%csrf_token%}
-          <div class="add-post-input-div">
-              <input type='text' name='post_content' class='my-post-content-class' placeholder="What's up?">
+{% if posts %}
+      <div class="post-list">
+          <div class="post-list-title">
+            <h2>Posts added by {{user_being_viewed.first_name}} {{user_being_viewed.last_name}}</h2>
           </div>
-          <div class="add-post-button-div">
-              <button type="submit" class="publish-post-button">Publish</button>
-          </div>
-        </form>
-        </div>
-
     {% for post in posts %}
         <div class="show-post-div">
           <div class="post-author-menu-div">
@@ -43,15 +24,11 @@
                     <p>{{ post.author.first_name }}  {{ post.author.last_name }}</p>
                 </a>
             </div>
-            {% if post.edited == True%}
-                <div class="post-date-div">
-                  <p>{{post.post_date}} (Edited)</p>
-                </div>
-            {% else %}
-              <div class="post-date-div">
-                  <p>{{post.post_date}}</p>
-                </div>
-            {% endif %}
+
+            <div class="post-date-div">
+              {{post.post_date}}
+            </div>
+
             <div class="post-menu-div">
             <div class="menu-item"></div>
               <div class="dropdown-container" tabindex="-1">
@@ -146,7 +123,10 @@
         </div>
     {% endfor %}
     </div>
-    <div class="index-right">
-    </div>
-</div>
-{% endblock content %}
+{% else%}
+<div class="post-list-title">
+            <h2>{{user_being_viewed.first_name}} {{user_being_viewed.last_name}} didn't share any posts!</h2>
+      </div>
+{% endif %}
+{% endblock %}
+

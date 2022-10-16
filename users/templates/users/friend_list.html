@@ -1,0 +1,40 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block title %}
+{% include 'website/navbar.html' %}
+<title>{{user_being_viewed.first_name}} {{user_being_viewed.last_name}} - friends</title>
+<!--<link rel="stylesheet" type="text/css" href="{% static 'chat_style.css' %}">-->
+{% endblock title%}
+
+{% block content %}
+{% if user_being_viewed.friends.count > 0 %}
+    <div class="friend-list-title">
+        <h1>{{user_being_viewed.first_name}} {{user_being_viewed.last_name}} has got {{user_being_viewed.friends.count}} friends!</h1>
+    </div>
+    <div class="friend-list-entire-div">
+    {% for friend in friends %}
+        <div class="friend-list-single">
+            <div class="friend-list-image">
+                <a href="{% url 'profile' friend.user_name %}">
+                <img class="medium-profile-picture" src="{{friend.profile.profile_picture.url}}">
+                </a>
+            </div>
+            <div class="friend-list-name">
+                <a href="{% url 'profile' friend.user_name %}">
+                    <p>
+                        {{friend.first_name}}
+                        {{friend.last_name}}
+                    </p>
+                </a>
+            </div>
+        </div>
+
+    {% endfor %}
+    </div>
+{% else %}
+    <div class="friend-list-title">
+        <h1>{{user_being_viewed.first_name}} {{user_being_viewed.last_name}} has got no friends!</h1>
+    </div>
+{% endif %}
+{% endblock %}
+

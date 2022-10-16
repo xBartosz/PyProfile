@@ -5,6 +5,7 @@ from website.models import MyUser
 from django.http import HttpResponseRedirect
 from django.shortcuts import reverse, redirect
 
+
 # Create your views here.
 
 
@@ -13,39 +14,37 @@ def send_friend_request(request, id):
     #from logged user to user that i will send id
     from_user = request.user
     to_user = MyUser.objects.get(id=id)
-    friend_request, created = Friend_Request.objects.get_or_create(from_user=from_user, to_user=to_user)
+    if to_user in request.user.friends.all():
+        pass
+    else:
+        friend_request, created = Friend_Request.objects.get_or_create(request_from_user=from_user, request_to_user=to_user)
+    # profile_username = to_user.user_name
 
-
-    # return redirect('index')
-    return HttpResponseRedirect('/profile/%d'%id)
-
+    # return HttpResponseRedirect('/profile/%s'%profile_username)
+    return redirect(request.META['HTTP_REFERER'])
 @login_required(login_url='login')
 def decline_friend_request(request, id):
     friend_request = Friend_Request.objects.get(id=id)
     friend_request.delete()
-    return redirect('friend_request')
-
+    # return redirect('friend_request')
+    return redirect(request.META['HTTP_REFERER'])
 @login_required(login_url='login')
 def cancel_friend_request(request, id):
-    profile_id = request.POST.get("profile_id")
+    # profile_username = request.POST.get("profile_username")
     friend_request = Friend_Request.objects.get(id=id)
     friend_request.delete()
-    return HttpResponseRedirect('/profile/%d'%int(profile_id))
-
+    # return HttpResponseRedirect('/profile/%s'%profile_username)
+    return redirect(request.META['HTTP_REFERER'])
 @login_required(login_url='login')
 def accept_friend_request(request, id):
     friend_request = Friend_Request.objects.get(id=id)
-    from_user = MyUser.objects.get(email=friend_request.from_user)
-    to_user = MyUser.objects.get(email=friend_request.to_user)
-    if request.user == friend_request.to_user:
-        to_user.friends.add(friend_request.from_user)
-        from_user.friends.add(friend_request.to_user)
-        # FriendList.add(friend_request.to_user, friend_request.from_user)
-        # FriendList.friends.add(user=friend_request.from_user, friends=friend_request.to_user)
-        # friend_request.to_user.add(friend_request.from_user)
-        # friend_request.from_user.add(friend_request.to_user)
+    from_user = MyUser.objects.get(email=friend_request.request_from_user)
+    to_user = MyUser.objects.get(email=friend_request.request_to_user)
+    if request.user == friend_request.request_to_user:
+        to_user.friends.add(friend_request.request_from_user)
+        from_user.friends.add(friend_request.request_to_user)
         friend_request.delete()
-    return redirect('friend_request')
+    return redirect(request.META['HTTP_REFERER'])
 
 @login_required(login_url='login')
 def delete_friend(request, id):
@@ -57,7 +56,8 @@ def delete_friend(request, id):
         current_user.friends.remove(second_user)
         second_user.friends.remove(current_user)
 
-    return HttpResponseRedirect('/profile/%d' % int(id))
+    # return HttpResponseRedirect('/profile/%s' % second_user.user_name)
+    return redirect(request.META['HTTP_REFERER'])
 
 
 

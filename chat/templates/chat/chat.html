@@ -1,0 +1,36 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block title %}
+{% include 'website/navbar.html' %}
+<title>Chat with your friends</title>
+<!--<link rel="stylesheet" type="text/css" href="{% static 'chat_style.css' %}">-->
+{% endblock title%}
+
+{% block content %}
+{% if friends %}
+    <div class="chat-friends-entire-div">
+    {% for friend in friends %}
+        <div class="chat-single-friend-div">
+            <div class="chat-friend-image">
+                <a href="{% url 'chatroom' friend.user_name %}">
+                    <img class="medium-profile-picture" src="{{friend.profile.profile_picture.url}}">
+                </a>
+            </div>
+            <div class="chat-friend-name">
+                <p>
+                    <a href="{% url 'chatroom' friend.user_name %}">
+                        {{friend.first_name}}
+                        {{friend.last_name}}
+                    </a>
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+<div class="chat-friends-title">
+    <h2>Look for some new friends! Click <a href="" style="color:gold;">here</a></h2>
+</div>
+{% endif %}
+{% endblock %}
+

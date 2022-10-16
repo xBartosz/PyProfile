@@ -1,0 +1,94 @@
+.body-not-logged-in {
+    margin: 0;
+    color: whitesmoke;
+    background-color: #24273b;
+}
+
+.entire-div {
+    text-align: center;
+}
+
+.top-div {
+
+    padding-top: 35px;
+
+}
+
+form {
+
+}
+
+.pyprofile-logo-login {
+    width: 600px;
+}
+
+
+
+.middle-div, .middle-register-div, .middle-reset-div  {
+    width: 300px;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.middle-div {
+    width: 340px;
+}
+
+.login-div {
+    padding-top: 40px;
+}
+
+.password-div {
+    padding-top: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: gold;
+}
+
+.login-button, .register-button {
+    background-color:#151728;
+    border: none;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.login-input, .password-input, .register-input,
+input[type=email]{
+    border: none;
+    outline: none;
+    height:54px;
+    border-radius:22px;
+    padding:0 18px;
+    color:whitesmoke;
+    background-color: #151728;
+    margin-left: 10px;
+    font-size:15px;
+    margin-bottom: 25px;
+}
+
+.paragraph-under-login {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.register-input {
+    margin-bottom: 15px;
+}
+
+.reset-password-title-div {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    margin-bottom: 80px;
+
+}
+
+.middle-register-div p {
+    padding-bottom: 10px;
+}

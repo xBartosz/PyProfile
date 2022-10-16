@@ -1,0 +1,141 @@
+{% extends 'website/base.html' %}
+
+{% block title %}
+{% include 'website/navbar.html' %}
+<title>Chat with - {{friend_profile.first_name}} {{friend_profile.last_name}}</title>
+{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid">
+		<div class="row">
+<!--			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" >-->
+			<div class="chat-div" >
+				<div class="card">
+<!--					<div class="card-header" id="friend-name">&nbsp;</div>-->
+					<div class="card-body height3">
+						<ul class="chat-list" id="chat-list-id">
+							<p class="start-conversation">&nbsp;</p>
+
+							{% for chat in chats %}
+								{% if chat.from_user == request.user.email %}
+
+									<li class="out">
+										<div class="chat-img">
+											<img alt="Avtar" src="{{ user.profile.profile_picture.url }}">
+										</div>
+										<div class="chat-body">
+											<div class="chat-message">
+												<h5>Me</h5>
+												{{ chat.timestamp|date}}
+												<p>{{chat.messag_body}}</p>
+<!--												<p>{{ chat.timestamp|date:"Y-m-d H:i:s" }}</p>-->
+
+											</div>
+										</div>
+									</li>
+
+
+
+								{% elif chat.from_user == friend.email %}
+
+
+									<li class="in">
+										<div class="chat-img">
+											<img alt="Friend's avatar" src="{{friend_profile.profile_picture.url}}">
+										</div>
+										<div class="chat-body">
+											<div class="chat-message">
+												<h5>{{ friend_profile.first_name}} {{ friend_profile.last_name}}</h5>
+												<p>{{ chat.messag_body }}</p>
+												<p>{{ chat.timestamp }}</p>
+											</div>
+										</div>
+									</li>
+
+							{% else %}
+							błąd
+							{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+					<div class="card-footer">
+						<div class="entire-card-footer">
+<!--							<div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">-->
+							<div class="message-input-div">
+								<textarea type="text" id="message" placeholder="Type a message"></textarea>
+							</div>
+<!--							<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">-->
+							<div class="button-input-div">
+<!--								<button id="send-btn-id">Send Message</button>-->
+								<button id="send-btn-id" class="send-message-button">Send Message</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	{{ friend|json_script:"friend" }}
+    {{ me|json_script:"me" }}
+
+    <script>
+
+		/* send message*/
+        document.getElementById('send-btn-id').onclick = function (e) {
+        	const msg = document.getElementById('message').value;
+          	chatSocket.send(JSON.stringify({
+            	'message': msg,
+				'user': me,
+				'friend': friendName
+	    	}));
+          	document.getElementById('message').value = "";
+        };
+
+        const friendName = JSON.parse(document.getElementById('friend').textContent);
+        const me = JSON.parse(document.getElementById('me').textContent);
+
+		/* set friend profile name */
+		// document.getElementById('friend-name').innerHTML = friendName['first_name'];
+
+		/* start conversation */
+		document.querySelector('.start-conversation').innerHTML = 'Start conversation with <strong>'+friendName['first_name']+'</strong>';
+
+		/* connection request */
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + friendName['user_name']
+            + '/'
+        );
+
+		chatSocket.onopen = function(e) {
+            console.log('Chatroom socket CONNECTED');
+        }
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+			var class_name = 'in';
+			var profile_image = '{{friend_profile.profile_picture.url}}';
+
+			if(me['user_name'] == data.user['user_name']) {
+              	data.user['first_name'] = 'Me';
+				class_name = 'out';
+				profile_image = '{{ user.profile.profile_picture.url }}';
+
+            }
+
+			var chat_list = document.querySelector('#chat-list-id');
+			var chat = "<li class=\""+class_name+"\"><div class=\"chat-img\"><img alt=\"Avtar\" src=\""+profile_image+"\"></div><div class=\"chat-body\"><div class=\"chat-message\"><h5>"+data.user['first_name']+"</h5><p>"+data.message+"</p></div></div></li>";
+
+			chat_list.innerHTML += chat;
+        }
+    </script>
+
+
+
+{% endblock %}
+

@@ -1,0 +1,20 @@
+{% load static %}
+
+<div class="sidebar">
+    <p>Friends:</p>
+    {% for friend in friends %}
+            <div class="sidebar-image-name">
+                <div class="sidebar-image">
+                    <a href="{% url 'chatroom' friend.user_name %}">
+                    <img class="small-profile-picture" src="{{friend.profile.profile_picture.url}}">
+                    </a>
+                </div>
+                <div class="sidebar-name">
+                    <a href="{% url 'chatroom' friend.user_name %}">
+                        {{friend.first_name}}
+                        {{friend.last_name}}
+                    </a>
+                </div>
+            </div>
+    {% endfor %}
+</div>

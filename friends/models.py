@@ -6,9 +6,10 @@ from django.utils import timezone
 
 
 class Friend_Request(models.Model):
-    from_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='from_user')
-    to_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='to_user')
+    request_from_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='request_from_user')
+    request_to_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='request_to_user')
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return (f'From {self.from_user}, to {self.to_user}')
+        return (f'From {self.request_from_user}, to {self.request_to_user}')
 

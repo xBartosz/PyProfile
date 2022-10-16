@@ -7,16 +7,19 @@
     --bg-behind: #ccc8db;
 }
 
+
+
 html {
     font-family: var(--font);
     color: white;
-
+    margin: 0;
+    padding: 0;
 }
 
 body {
     color: white;
-    padding:0px;
-    margin:0px;
+    padding:0;
+    margin:0;
     height:100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -26,6 +29,14 @@ body {
 
 /*LOGIN, REGISTER SITE*/
 
+.msg-right{
+    float:right;
+    background-color:red;
+}
+.msg-left{
+    float:left;
+    background-color:green;
+}
 .PyProfile_main_website {
     height:200px;
     width: auto;
@@ -48,7 +59,7 @@ body {
     font-size: 15px;
 }
 
-input[type=submit], .button-standard{
+input[type=submit], button, .button-standard{
     background-color: #212F3D ;
     border-radius: 20px;
     margin: 5px 20px 5px 20px;
@@ -165,16 +176,7 @@ textarea {
 /*INDEX SITE*/
 /*margin zewnatrz*/
 
-.navbar {
-    background-color: var(--bg-color);
-    height: 6em;
-    width: 100%;
-    float:left;
-    margin-bottom: 2em;
-    padding-top:0px;
-    margin-top:0px;
 
-}
 
 .input-search-friends {
     float:left;
@@ -377,10 +379,8 @@ a div {
 
 .dropdown {
     box-sizing: border-box;
-    float:left;
-    /*right: 10px;*/
     background-color: #1b86f9;
-    box-shadow: 0 0 10px #1b86f9;
+    /*box-shadow: 0 0 10px #1b86f9;*/
     outline: none;
     opacity: 0;
     z-index: -1;
@@ -391,10 +391,10 @@ a div {
 
 .dropdown-navbar {
     box-sizing: border-box;
-    float:left;
+    /*float:left;*/
     /*right: 10px;*/
-    background-color: var(--bg-color);
-    box-shadow: 0 0 10px var(--bg-color);
+    background-color: #1b86f9;
+    /*box-shadow: 0 0 10px var(--bg-color);*/
     outline: none;
     opacity: 0;
     z-index: -1;
@@ -419,3 +419,19 @@ a div {
 
 
 /*Input type file*/
+
+/*messages*/
+
+/*NAVBAR*/
+.navbar {
+    background-color: var(--bg-color);
+    height: 6em;
+    width: 100%;
+    margin-bottom: 2em;
+    padding-top:0px;
+    margin-top:0px;
+    /*position:fixed;*/
+    /*z-index: 10000;*/
+    top: 0px;
+
+}

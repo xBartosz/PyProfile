@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'chat',
     # 'django_unicorn',
     'friends',
+    'channels',
+    'rest_framework',
 
 ]
 
@@ -123,15 +125,18 @@ USE_TZ = True
 MEDIA_ROOT = BASE_DIR/'media' #dodane
 MEDIA_URL = '/media/' # dodane
 
-STATIC_URL = 'website/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'website.MyUser' #dodane
 
+AUTH_USER_MODEL = 'website.MyUser' #dodane
 # AUTHENTICATION_BACKENDS = (
 #     'website.backends.MyBackend',
 #     'django.contrib.auth.backends.ModelBackend',
@@ -143,3 +148,15 @@ EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+ASGI_APPLICATION = "PyProfile.routing.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": 'channels.layers.InMemoryChannelLayer'
+    }
+}
+
+GOOGLE_RECAPTCHA_SITE_KEY = '6LeiNCIiAAAAAEc3dclThM1NUeZz3CrPo3W4Afuz' #your reCAPTCHA SITE key
+
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LeiNCIiAAAAAA25QjdiNUSAf6ndePoGQjYSMUdZ' #your reCAPTCHA SECRET key
