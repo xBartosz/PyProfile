@@ -49,3 +49,9 @@ class Message(models.Model):
     class Meta:
         verbose_name = 'Message'
         verbose_name_plural = 'Messages'
+
+    def get_formatted_date(self):
+        return self.timestamp
+
+# class MessageNotification(models.Model):
+

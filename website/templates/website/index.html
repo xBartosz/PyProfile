@@ -32,7 +32,7 @@
         </form>
         </div>
 
-    {% for post in posts %}
+        {% for post in posts %}
         <div class="show-post-div">
           <div class="post-author-menu-div">
             <div class="post-author-image-div">
@@ -77,20 +77,20 @@
             <form action="{% url 'like_post' post.id %}" method="POST">
                 {% csrf_token %}
                 <!--            If that check if currently logged user like post-->
-                {% if user not in post.likes.all%}
+                {% if user not in post.user_likes.all%}
                     <button type="submit" class="like-button" name="post_id_like" value="{{post.id}}">Like <i class="fa-regular fa-thumbs-up"></i></button>
                 {% else %}
-                    <button type="submit" class="like-button" name="post_id_like" value="{{post.id}}" style="color: lightgreen;">You liked that! <i class="fa-regular fa-thumbs-up" style="color: lightgreen;"></i></button>
+                    <button type="submit" class="like-button" name="post_id_like" value="{{post.id}}" style="color: lightgreen;">You like that! <i class="fa-regular fa-thumbs-up" style="color: lightgreen;"></i></button>
                 {% endif %}
             </form>
           </div>
           <hr class="line-under-post-content">
           <div class="post-likes-names-div">
-    <!--            If that counts Likes-->
-            {% if post.likes.all.count == 1 %}
-                <p>{{post.likes.all.count}} Like</p>
+
+            {% if post.likes == 1 %}
+                <p>{{post.likes}} Like</p>
             {% else %}
-                <p>{{post.likes.all.count}} Likes</p>
+                <p>{{post.likes}} Likes</p>
             {% endif %}
     <!--            If that shows who Liked post-->
     <!--        {% for likes in post.likes.all %}-->

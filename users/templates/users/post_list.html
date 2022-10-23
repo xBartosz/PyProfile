@@ -13,7 +13,7 @@
           <div class="post-list-title">
             <h2>Posts added by {{user_being_viewed.first_name}} {{user_being_viewed.last_name}}</h2>
           </div>
-    {% for post in posts %}
+     {% for post in posts %}
         <div class="show-post-div">
           <div class="post-author-menu-div">
             <div class="post-author-image-div">
@@ -24,11 +24,15 @@
                     <p>{{ post.author.first_name }}  {{ post.author.last_name }}</p>
                 </a>
             </div>
-
-            <div class="post-date-div">
-              {{post.post_date}}
-            </div>
-
+            {% if post.edited == True%}
+                <div class="post-date-div">
+                  <p>{{post.post_date}} (Edited)</p>
+                </div>
+            {% else %}
+              <div class="post-date-div">
+                  <p>{{post.post_date}}</p>
+                </div>
+            {% endif %}
             <div class="post-menu-div">
             <div class="menu-item"></div>
               <div class="dropdown-container" tabindex="-1">
@@ -54,7 +58,7 @@
             <form action="{% url 'like_post' post.id %}" method="POST">
                 {% csrf_token %}
                 <!--            If that check if currently logged user like post-->
-                {% if user not in post.likes.all%}
+                {% if user not in post.user_likes.all%}
                     <button type="submit" class="like-button" name="post_id_like" value="{{post.id}}">Like <i class="fa-regular fa-thumbs-up"></i></button>
                 {% else %}
                     <button type="submit" class="like-button" name="post_id_like" value="{{post.id}}" style="color: lightgreen;">You liked that! <i class="fa-regular fa-thumbs-up" style="color: lightgreen;"></i></button>
@@ -63,11 +67,11 @@
           </div>
           <hr class="line-under-post-content">
           <div class="post-likes-names-div">
-    <!--            If that counts Likes-->
-            {% if post.likes.all.count == 1 %}
-                <p>{{post.likes.all.count}} Like</p>
+
+            {% if post.likes == 1 %}
+                <p>{{post.likes}} Like</p>
             {% else %}
-                <p>{{post.likes.all.count}} Likes</p>
+                <p>{{post.likes}} Likes</p>
             {% endif %}
     <!--            If that shows who Liked post-->
     <!--        {% for likes in post.likes.all %}-->

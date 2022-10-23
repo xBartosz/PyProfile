@@ -11,6 +11,7 @@ from friends.models import Friend_Request
 from website.forms import ReplyForm
 
 
+
 def search_users(request):
     if request.method == "POST":
         search = request.POST['search']  # input type from template
@@ -116,3 +117,4 @@ def post_list(request, username):
     context = {'posts': posts, 'user_being_viewed': user_being_viewed}
 
     return render(request, 'users/post_list.html', context)
+

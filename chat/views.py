@@ -26,14 +26,17 @@ from .serializers import MessageSerializer
 from .models import Message, Thread
 from website.serializers import UserSerializer
 from users.models import Profile
+from django import template
 
 
 def chat(request):
     friends = request.user.friends.all().order_by('first_name')
+    # new_messages_per_user = Message.objects.filter(to_user=request.user, is_read=False)
 
     context = {'friends' : friends}
 
     return render(request, 'chat/chat.html', context)
+
 class ChatIndexView(View):
     template_name = 'chat/chatroom.html'
 

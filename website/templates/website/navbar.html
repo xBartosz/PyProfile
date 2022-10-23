@@ -1,4 +1,5 @@
 {% load static %}
+{% load website_tags %}
 
 <div class="navbar-entire-div">
     <div class="left-section">
@@ -11,6 +12,33 @@
             <input class="search-bar" type="search" placeholder="Search friends" name="search">
             <button type="submit" hidden="hidden">Submit</button>
         </form>
+    </div>
+    <div class="between-sections">
+        <div class="notifications-icon-container">
+            <a href="{% url 'friend_request' %}">
+                <i class="fa-solid fa-user fa-xl"></i>
+            </a>
+            {% if user|number_of_friend_requests > 0 %}
+                <div class="notifications-count">{{user|number_of_friend_requests}}</div>
+            {% endif %}
+        </div>
+        <div class="notifications-icon-container">
+            <a href="{% url 'chat' %}">
+                <i class="fa-solid fa-message fa-xl"></i>
+
+            {% if user|number_of_new_messages > 0 %}
+                <div class="notifications-count-message">{{user|number_of_new_messages}}</div>
+            {% endif %}
+            </a>
+        </div>
+        <div class="notifications-icon-container">
+            <a href="{% url 'notification_list' %}">
+                <i class="fa-solid fa-bell fa-xl"></i>
+            </a>
+            {% if user|number_of_notifications > 0 %}
+                <div class="notifications-count">{{user|number_of_notifications}}</div>
+            {% endif %}
+        </div>
     </div>
     <div class="right-section">
         <img class="current-user-avatar" src="{{ request.user.profile.profile_picture.url }}">

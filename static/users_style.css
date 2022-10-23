@@ -358,6 +358,7 @@ button.createbtn i {
 }
 
 .friend-request {
+  padding-top: 20px;
   text-align: center;
   vertical-align: middle;
 }

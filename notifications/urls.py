@@ -1,9 +1,8 @@
-# from django.urls import path
-# from .views import show
-# # from .controllers import PostsApiView
-#
-#
-# urlpatterns = [
-#     path('test', show, name='test'),
-#
-# ]
+from django.urls import path
+from .views import notification_list
+
+
+urlpatterns = [
+    path('notifications/', notification_list, name='notification_list')
+
+]

@@ -27,9 +27,8 @@
 										<div class="chat-body">
 											<div class="chat-message">
 												<h5>Me</h5>
-												{{ chat.timestamp|date}}
 												<p>{{chat.messag_body}}</p>
-<!--												<p>{{ chat.timestamp|date:"Y-m-d H:i:s" }}</p>-->
+<!--												<p>{{ chat.timestamp}}</p>-->
 
 											</div>
 										</div>
@@ -48,13 +47,13 @@
 											<div class="chat-message">
 												<h5>{{ friend_profile.first_name}} {{ friend_profile.last_name}}</h5>
 												<p>{{ chat.messag_body }}</p>
-												<p>{{ chat.timestamp }}</p>
+<!--												<p>{{ chat.timestamp}}</p>-->
 											</div>
 										</div>
 									</li>
 
 							{% else %}
-							błąd
+							error
 							{% endif %}
 							{% endfor %}
 						</ul>
@@ -82,7 +81,11 @@
     {{ me|json_script:"me" }}
 
     <script>
+		function Scrolldown() {
+			 window.scroll(0,300);
+		}
 
+		window.onload = Scrolldown;
 		/* send message*/
         document.getElementById('send-btn-id').onclick = function (e) {
         	const msg = document.getElementById('message').value;

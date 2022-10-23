@@ -4,6 +4,9 @@ from django.utils.text import slugify
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.db.models.signals import post_save, post_delete
+from notifications.models import Notification
+
 
 class CustomUserManager(BaseUserManager):
 
@@ -15,9 +18,9 @@ class CustomUserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
-            user_name = user_name,
-            first_name = first_name,
-            last_name = last_name,
+            user_name=user_name,
+            first_name=first_name,
+            last_name=last_name,
             **extra_fields
         )
         user.set_password(password)
@@ -37,33 +40,6 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(email, user_name, password, first_name, last_name, **extra_fields)
 
 
-# class CustomUserManager(BaseUserManager):
-#     def create_user(self, email, user_name, first_name, last_name, password=None):
-#         if not email:
-#             raise ValueError("Users must have an email address. ")
-#         user = self.model(
-#             email=self.normalize_email(email).lower(),
-#             user_name = user_name,
-#             first_name = first_name,
-#             last_name = last_name
-#         )
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
-#
-#     def create_superuser(self, email, user_name, first_name, last_name, password):
-#         user = self.create_user(
-#             email = self.normalize_email(email).lower(),
-#             user_name = user_name,
-#             first_name = first_name,
-#             last_name = last_name,
-#             password = password
-#         )
-#         user.is_admin = True
-#         user.is_staff = True
-#         user.is_superuser = True
-#         user.save(using=self._db)
-#         return user
 
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
@@ -73,7 +49,6 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=240)
     friends = models.ManyToManyField('self', blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    # last_online = models.DateTimeField(blank=True, null=True)
     is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
@@ -82,7 +57,6 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['user_name', 'first_name', 'last_name']
-
 
     #
     # # In this method, check that the date of the last visit is not older than 15 minutes
@@ -105,22 +79,42 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     #     return _('Unknown')
 
 
-
 class Post(models.Model):
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post_content = models.TextField(blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
-    likes = models.ManyToManyField(MyUser, related_name='post_likes', blank=True)
     edited = models.BooleanField(default=False)
+    likes = models.IntegerField(default=0)
+    user_likes = models.ManyToManyField(MyUser, related_name='user_likes')
 
     def count_likes(self):
         return self.likes.count()
-    # likes = models.ManyToManyField(MyUser, related_name='posts', null=True, blank=True)
 
-    # def save(self, *args, **kwargs):
-    #     super(Post, self).save(*args, **kwargs)
-    # def total_likes(self):
-    #     return self.likes.count()
+
+
+    def user_created_post(sender, instance, created, *args, **kwargs):
+        if created:
+            Post = instance
+            post = Post
+            sender = post.author
+            notification_text =f'{sender.first_name} {sender.last_name} just add a new post {Post.post_content[:50]}'
+            friends = sender.friends.all()
+
+            for friend in friends:
+                notify = Notification(post=post, sender=sender, receiver=friend, notification_text=notification_text,
+                                      notification_type="Post")
+                notify.save()
+
+    def user_deleted_post(sender, instance, *args, **kwargs):
+        Post = instance
+        post = Post
+        sender = Post.author
+
+        notify = Notification.objects.filter(post=post, sender=sender, notification_type="Post")
+        notify.delete()
+
+post_save.connect(Post.user_created_post, sender=Post)
+post_delete.connect(Post.user_deleted_post, sender=Post)
 
 
 class Reply_for_post(models.Model):
@@ -129,20 +123,82 @@ class Reply_for_post(models.Model):
     reply_content = models.TextField(blank=False, null=False)
     reply_date = models.DateTimeField(auto_now_add=True)
 
+    def user_comment_post(sender, instance, *args, **kwargs):
+        reply_for_post = instance
+        post = reply_for_post.post
+        sender = reply_for_post.reply_author
+        receiver = post.author
+        notification_text = f'{sender.first_name} {sender.last_name} just comment your post {reply_for_post.reply_content[:50]}'
+        if sender != receiver:
+            notify = Notification(post=post, sender=sender, receiver=receiver, notification_text=notification_text,
+                                  notification_type="Comment")
+            notify.save()
 
-Report_post_reasons = [('Spam', 'Spam'),
-                       ('Nudity', 'Nudity'),
-                       ('Violence', 'Violence'),
-                       ('Harassment', 'Harassment'),
-                       ('Suicide', 'Suicide'),
-                       ('Self-Injury', 'Self-Injury'),
-                       ('False News', 'False News'),
-                       ('Hate Speech', 'Hate Speech'),
-                       ('Terrorism', 'Terrorism'),
+    def user_deleted_comment(sender, instance, *args, **kwargs):
+        reply_for_post = instance
+        post = reply_for_post.post
+        sender = reply_for_post.reply_author
 
-                       ]
+        notify = Notification.objects.filter(post=post, sender=sender, notification_type="Comment")
+        notify.delete()
+
+
+post_save.connect(Reply_for_post.user_comment_post, sender=Reply_for_post)
+post_delete.connect(Reply_for_post.user_deleted_comment, sender=Reply_for_post)
+
+
+class Likes(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="reference_to_post")
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="user_like")
+
+    # likes = models.ManyToManyField(MyUser, related_name='posts', null=True, blank=True)
+
+    # def save(self, *args, **kwargs):
+    #     super(Post, self).save(*args, **kwargs)
+    # def total_likes(self):
+    #     return self.likes.count()
+
+    def user_liked_post(sender, instance, *args, **kwargs):
+        like = instance
+        post = like.post
+        sender = like.user
+        notification_text = f'{sender.first_name} {sender.last_name} just liked your post'
+        receiver = post.author
+
+        if sender != receiver:
+            notify = Notification(post=post, sender=sender, receiver=receiver, notification_text=notification_text,
+                                  notification_type="Like")
+            notify.save()
+
+    def user_unliked_post(sender, instance, *args, **kwargs):
+        like = instance
+        post = like.post
+        sender = like.user
+        receiver = post.author
+
+        if sender != receiver:
+            notify = Notification.objects.filter(post=post, sender=sender,
+                                                 notification_type="Like")
+            notify.delete()
+
+
+post_save.connect(Likes.user_liked_post, sender=Likes)
+post_delete.connect(Likes.user_unliked_post, sender=Likes)
+
 
 class Report_post(models.Model):
+    Report_post_reasons = [('Spam', 'Spam'),
+                           ('Nudity', 'Nudity'),
+                           ('Violence', 'Violence'),
+                           ('Harassment', 'Harassment'),
+                           ('Suicide', 'Suicide'),
+                           ('Self-Injury', 'Self-Injury'),
+                           ('False News', 'False News'),
+                           ('Hate Speech', 'Hate Speech'),
+                           ('Terrorism', 'Terrorism'),
+
+                           ]
+
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     applicant = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     reason = models.CharField(max_length=50, choices=Report_post_reasons)

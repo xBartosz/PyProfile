@@ -7,6 +7,7 @@ urlpatterns = [
     path('friend_request/', friend_request, name='friend_request'),
     path('search_users/', search_users, name='search_users'),
     path('profile/<str:username>/friends', friend_list, name='friend_list'),
-    path('profile/<str:username>/posts', post_list, name='post_list')
+    path('profile/<str:username>/posts', post_list, name='post_list'),
+
 
 ]

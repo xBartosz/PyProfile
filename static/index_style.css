@@ -30,6 +30,7 @@
 }
 
 .add-post-input-div {
+    padding-left:20px;
   /* border: 1px solid white; */
   /* background-color: transparent; */
 
@@ -47,7 +48,6 @@
 
 .my-post-content-class::placeholder {
     font-size: 18px;
-    padding-left: 20px;
 }
 
 .add-post-button-div {

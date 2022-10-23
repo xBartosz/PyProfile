@@ -9,12 +9,14 @@ from django.db.models.signals import post_save
 
 # Create your models here.
 
-Genders = [('Female', 'Female'),
-           ('Male', 'Male')]
-
-Options = [('False', 'False'),
-           ('True', 'True')]
 class Profile(models.Model):
+
+    Genders = [('Female', 'Female'),
+               ('Male', 'Male')]
+
+    Options = [('False', 'False'),
+               ('True', 'True')]
+
     user = models.OneToOneField(MyUser, null=True, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=45)
     last_name = models.CharField(max_length=60)

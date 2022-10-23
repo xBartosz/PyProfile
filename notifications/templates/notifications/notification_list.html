@@ -1,0 +1,28 @@
+{% extends 'website/base.html' %}
+
+{% block title %}
+{% include 'website/navbar.html' %}
+<title>Notifications</title>
+{% endblock title%}
+
+{% block content %}
+{% if show_notifications.count > 0%}
+<div class="notification-list-title">
+    <h2>Current notifications</h2>
+</div>
+<div class="notification-list-entire">
+    {% for notification in show_notifications %}
+    <div class="notification">
+        {{notification.notification_text}}
+        <a href="{% url 'detail_view' notification.post.id%}">
+            ({{notification.post.post_content}})
+        </a>
+    </div>
+</div>
+    {% endfor %}
+{% else %}
+<div class="notification-list-title">
+    <h2>You you've got no notifications!</h2>
+</div>
+{% endif %}
+{% endblock content %}

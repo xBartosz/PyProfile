@@ -1,7 +1,6 @@
 from django.db import models
 
 
-
 class Notification(models.Model):
     NOTIFICATION_TYPES = [("Like", "Like"), ("Comment", "Comment"), ("Post", "Post")]
 

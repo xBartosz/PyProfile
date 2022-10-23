@@ -9,9 +9,12 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from .forms import UserRegisterForm, PostForm, ReplyForm, PostLike, ReportForm
 from django.contrib.auth.decorators import login_required
-from .models import Post, MyUser, Reply_for_post, Report_post
+from .models import Post, MyUser, Reply_for_post, Report_post, Likes
 from django.db.models import Q
 from django.contrib import messages
+from chat.models import Message
+from friends.models import Friend_Request
+from notifications.models import Notification
 
 
 
@@ -25,7 +28,6 @@ class RegisterFunction(FormView):
         form.instance.user_name = form.instance.first_name + (''.join(random.choice(digits) for i in range(5)))
         form.instance.user_name = unidecode.unidecode(form.instance.user_name)
         form.instance.email = form.instance.email.lower()
-
         user = form.save()
 
         if user is not None:
@@ -59,9 +61,10 @@ def login_user(request):
 @login_required(login_url='login')
 def detail_view(request, pk):
     detail_post = Post.objects.filter(id=pk)
+    likes = Likes.objects.all()
 
 
-    context = {'detail_post' : detail_post}
+    context = {'detail_post' : detail_post, 'likes': likes}
 
     return render(request, 'website/detail_view.html', context)
 
@@ -72,7 +75,19 @@ def index(request):
     #if author is friend
     friends = request.user.friends.all().order_by('first_name')
     posts = Post.objects.filter(Q(author__in=friends) | Q(author=request.user)).order_by('-post_date')
+    likes = Likes.objects.all()
 
+
+
+
+
+    # post = Post.objects.filter(id=get_id)
+    # print(get_id)
+    # liked = False
+    # if Likes.objects.get(post=post, user=request.user).exists():
+    #     liked = False
+    # else:
+    #     liked = True
 
     form_post = PostForm(request.POST or None)
     form_reply = ReplyForm(request.POST or None)
@@ -91,9 +106,7 @@ def index(request):
             form_reply.save()
             return redirect('index')
 
-
-
-    context = {'friends': friends, 'form_post': form_post, 'posts': posts}
+    context = {'friends': friends, 'form_post': form_post, 'posts': posts, 'likes': likes}
     return render(request, 'website/index.html', context)
 
 @login_required(login_url='login')
@@ -147,15 +160,32 @@ def Report_function(request, id):
 
 @login_required(login_url='login')
 def like_post(request, id):
-    post = get_object_or_404(Post, id=request.POST.get("post_id_like"))
+    # post = get_object_or_404(Post, id=request.POST.get("post_id_like"))
+    post = Post.objects.get(id=id)
+    post_is_liked = Likes.objects.filter(post=post, user=request.user)
+    number_of_likes = post.likes
     liked = False
-    if post.likes.filter(id=request.user.id).exists():
-        post.likes.remove(request.user)
+    if post_is_liked.exists():
+        post_is_liked.delete()
+        post.user_likes.remove(request.user)
+        number_of_likes -= 1
         liked = False
     else:
-        post.likes.add(request.user)
+        Likes.objects.create(post=post, user=request.user)
+        post.user_likes.add(request.user)
+        number_of_likes += 1
         liked = True
+    post.likes = number_of_likes
+    post.save()
+
+
+    # if post.likes.filter(id=request.user.id).exists():
+    #     post.likes.remove(request.user)
+    #     liked = False
+    # else:
+    #     post.likes.add(request.user)
+    #     liked = True
 
     # Changed because after like in profile redirected to the index page
-    return HttpResponseRedirect(reverse('index'))
+    return redirect(request.META['HTTP_REFERER'])
 
