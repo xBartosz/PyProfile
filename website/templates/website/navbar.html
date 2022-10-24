@@ -18,29 +18,36 @@
             <a href="{% url 'friend_request' %}">
                 <i class="fa-solid fa-user fa-xl"></i>
             </a>
-            {% if user|number_of_friend_requests > 0 %}
-                <div class="notifications-count">{{user|number_of_friend_requests}}</div>
-            {% endif %}
+                <div id="friends">
+                {% if user|number_of_friend_requests > 0 %}
+                    <div id="notifications-count-friend-requests">{{user|number_of_friend_requests}}</div>
+                {% endif %}
+                </div>
         </div>
         <div class="notifications-icon-container">
             <a href="{% url 'chat' %}">
                 <i class="fa-solid fa-message fa-xl"></i>
 
+            <div id="messages">
             {% if user|number_of_new_messages > 0 %}
-                <div class="notifications-count-message">{{user|number_of_new_messages}}</div>
+                <div id="notifications-count-message">{{user|number_of_new_messages}}</div>
             {% endif %}
+            </div>
             </a>
         </div>
         <div class="notifications-icon-container">
             <a href="{% url 'notification_list' %}">
                 <i class="fa-solid fa-bell fa-xl"></i>
             </a>
+            <div id="notify">
             {% if user|number_of_notifications > 0 %}
-                <div class="notifications-count">{{user|number_of_notifications}}</div>
+                <div id="notifications-count">{{user|number_of_notifications}}</div>
             {% endif %}
+            </div>
         </div>
     </div>
     <div class="right-section">
+
         <img class="current-user-avatar" src="{{ request.user.profile.profile_picture.url }}">
         <p class="current-user-name"><a href="{% url 'profile' user.user_name %}">{{user.first_name}} {{user.last_name}}</a></p>
 
@@ -55,3 +62,37 @@
             </div>
         </div>
 </div>
+<body>
+<script>
+  let friend_requests = document.getElementById('friends');
+  let messages = document.getElementById('messages');
+  let notifications = document.getElementById('notify');
+
+
+    setInterval(function() {
+        fetch("{% url 'ajax' %}")
+        .then(response => response.json())
+        .then(result => {
+            var friends_amount = `${result.friend_requests_get}`;
+            if (friends_amount > 0) {
+                friend_requests.innerHTML = `<div id="notifications-count-friend-requests">${friends_amount}</div>`;
+            } else {
+                friend_requests.innerHTML = '';
+            }
+            var message_amount = `${result.messages_get}`;
+            if (message_amount > 0) {
+                messages.innerHTML = `<div id="notifications-count-message">${message_amount}</div>`;
+            } else {
+                messages.innerHTML = '';
+            }
+
+            var notifications_amount = `${result.notifications_get}`;
+            if (notifications_amount > 0) {
+                notifications.innerHTML = `<div id="notifications-count">${notifications_amount}</div>`;
+            } else {
+                notifications.innerHTML = '';
+            }
+        });
+    }, 3000)
+</script>
+</body>

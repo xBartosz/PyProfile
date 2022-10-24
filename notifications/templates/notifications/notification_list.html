@@ -6,20 +6,33 @@
 {% endblock title%}
 
 {% block content %}
-{% if show_notifications.count > 0%}
+{% if show_notifications_amount > 0 %}
 <div class="notification-list-title">
     <h2>Current notifications</h2>
+   <a class='button-standard' href="{% url 'mark_as_read' %}">Mark as read</a>
+   <a class='button-standard' href="{% url 'delete_all_notifications' %}">Delete all</a>
 </div>
 <div class="notification-list-entire">
-    {% for notification in show_notifications %}
+
+    {% for notification in show_notifications_seen %}
     <div class="notification">
-        {{notification.notification_text}}
-        <a href="{% url 'detail_view' notification.post.id%}">
-            ({{notification.post.post_content}})
-        </a>
+        <div class="notification-image">
+            <img class="small-profile-picture" src="{{notification.sender.profile.profile_picture.url}}">
+        </div>
+        <div class="notification-name">
+            {{notification.sender.first_name}}
+            {{notification.sender.last_name}}
+            {{notification.notification_text}}
+        </div>
+        <div class="notification-post">
+            <a href="{% url 'detail_view' notification.post.id%}">
+                <span>("{{notification.post.post_content|truncatewords:5}}")</span>
+            </a>
+            <span style="color: #da9f5d">({{notification.date|timesince}} ago)</span>
+        </div>
     </div>
-</div>
     {% endfor %}
+</div>
 {% else %}
 <div class="notification-list-title">
     <h2>You you've got no notifications!</h2>

@@ -1,0 +1,22 @@
+.notification-list-title {
+  text-align: center;
+}
+
+.notification-list-entire {
+  display: grid;
+  grid-template-rows: 1fr;
+  justify-content: center;
+
+}
+
+.notification {
+  padding-top: 20px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.notification-image, .notification-name, .notification-post {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}

@@ -66,7 +66,7 @@
     flex-shrink: 0;
     margin-right: 8%;
     margin-left: 3%;
-    width: 130px;
+    width: 110px;
 }
 
 .notifications-icon-container {
@@ -74,7 +74,7 @@
     display: inline-block;
 }
 
-.notifications-count, .notifications-count-message {
+#notifications-count, #notifications-count-message, #notifications-count-friend-requests {
     position:absolute;
     top: -10px;
     right: -17px;
@@ -88,7 +88,7 @@
     border-radius: 10px;
     font-family: 'Arial';
 }
-.notifications-count-message {
+#notifications-count-message {
     right: -22px;
 }
 

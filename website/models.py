@@ -97,7 +97,8 @@ class Post(models.Model):
             Post = instance
             post = Post
             sender = post.author
-            notification_text =f'{sender.first_name} {sender.last_name} just add a new post {Post.post_content[:50]}'
+            # notification_text =f'just add a new post {Post.post_content[:50]}'
+            notification_text =f'just add a new post'
             friends = sender.friends.all()
 
             for friend in friends:
@@ -128,7 +129,8 @@ class Reply_for_post(models.Model):
         post = reply_for_post.post
         sender = reply_for_post.reply_author
         receiver = post.author
-        notification_text = f'{sender.first_name} {sender.last_name} just comment your post {reply_for_post.reply_content[:50]}'
+        # notification_text = f'just comment your post {reply_for_post.reply_content[:50]}'
+        notification_text = f'just comment your post'
         if sender != receiver:
             notify = Notification(post=post, sender=sender, receiver=receiver, notification_text=notification_text,
                                   notification_type="Comment")
@@ -162,7 +164,7 @@ class Likes(models.Model):
         like = instance
         post = like.post
         sender = like.user
-        notification_text = f'{sender.first_name} {sender.last_name} just liked your post'
+        notification_text = f'just liked your post'
         receiver = post.author
 
         if sender != receiver:

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.views import LoginView, FormView
 import random
 import string
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -15,6 +15,7 @@ from django.contrib import messages
 from chat.models import Message
 from friends.models import Friend_Request
 from notifications.models import Notification
+
 
 
 
@@ -179,13 +180,13 @@ def like_post(request, id):
     post.save()
 
 
-    # if post.likes.filter(id=request.user.id).exists():
-    #     post.likes.remove(request.user)
-    #     liked = False
-    # else:
-    #     post.likes.add(request.user)
-    #     liked = True
-
     # Changed because after like in profile redirected to the index page
     return redirect(request.META['HTTP_REFERER'])
 
+def Ajax(request):
+    friend_requests_get = len(Friend_Request.objects.filter(request_to_user=request.user))
+    messages_get = len(Message.objects.filter(to_user=request.user, is_read=False))
+    notifications_get = len(Notification.objects.filter(receiver=request.user, is_seen=False))
+    return JsonResponse({'friend_requests_get':friend_requests_get,
+                         'messages_get': messages_get,
+                         'notifications_get': notifications_get})
