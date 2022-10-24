@@ -1,10 +1,8 @@
 from django.db import models
-from datetime import datetime
 from website.models import MyUser
 from django.utils import timezone
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from django.db.models import Q
 
 
 class Thread(models.Model):
@@ -31,15 +29,18 @@ def unique_room_id_generator(sender, instance, *args, **kwargs):
     if not instance.unique_room_id:
         instance.unique_room_id = unique_room_genarator(instance)
 
+
 pre_save.connect(unique_room_id_generator, sender=Thread)
+
 
 @receiver(post_save, sender=Thread)
 def create_room_name(sender, instance, created, **kwargs):
     if created:
         instance.create_new_room()
 
+
 class Message(models.Model):
-    messag_body = models.TextField(default="empty")
+    message_body = models.TextField(default="empty")
     from_user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='from_user')
     to_user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='to_user')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
@@ -50,8 +51,5 @@ class Message(models.Model):
         verbose_name = 'Message'
         verbose_name_plural = 'Messages'
 
-    def get_formatted_date(self):
-        return self.timestamp
 
-# class MessageNotification(models.Model):
 

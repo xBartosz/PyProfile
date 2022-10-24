@@ -12,13 +12,16 @@
             {%csrf_token%}
                 <p>First name: {{p_form.first_name}}</p>
                 <p>Last name: {{p_form.last_name}}</p>
-                <p>Comes from: {{p_form.comes_from}}</p>
+                <p>City: {{p_form.city}}</p>
                 <p>About me: {{p_form.about_me}}</p>
                 <p>Birth date: {{p_form.birth_date}}</p>
                 <p>Change mobile: {{p_form.mobile}}</p>
                 <p>Change gender: {{p_form.gender}}</p>
+                <br>
                 <p>Do you want to share your email? {{p_form.email_visibility}}</p>
+                <br>
                 <p>Do you want to share your mobile? {{p_form.mobile_visibility}}</p>
+                <br>
                 <p>Change profile picture: {{p_form.profile_picture}}</p>
             <button class="save-button" type="submit">Save</button>
         </form>

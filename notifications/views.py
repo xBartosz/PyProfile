@@ -13,12 +13,14 @@ def notification_list(request):
                'show_notifications_amount': show_notifications_amount}
     return render(request, 'notifications/notification_list.html', context)
 
+
 def mark_as_read(request):
     show_notifications = Notification.objects.filter(receiver=request.user)
     for notification in show_notifications:
         notification.is_seen = True
         notification.save()
     return redirect(request.META['HTTP_REFERER'])
+
 
 def delete_all_notifications(request):
     Notification.objects.filter(receiver=request.user).delete()

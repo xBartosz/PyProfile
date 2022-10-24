@@ -1,14 +1,10 @@
 from rest_framework import serializers
-
-from website.models import MyUser
-
 from .models import Message
 
 
 class MessageSerializer(serializers.ModelSerializer):
     from_user = serializers.StringRelatedField(many=False)
     to_user = serializers.StringRelatedField(many=False)
-
 
     class Meta:
         model = Message

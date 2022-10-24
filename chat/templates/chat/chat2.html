@@ -27,7 +27,7 @@
 										<div class="chat-body">
 											<div class="chat-message">
 												<h5>Me</h5>
-												<p>{{chat.messag_body}}</p>
+												<p>{{chat.message_body}}</p>
 <!--												<p>{{ chat.timestamp}}</p>-->
 
 											</div>
@@ -46,7 +46,7 @@
 										<div class="chat-body">
 											<div class="chat-message">
 												<h5>{{ friend_profile.first_name}} {{ friend_profile.last_name}}</h5>
-												<p>{{ chat.messag_body }}</p>
+												<p>{{ chat.message_body }}</p>
 <!--												<p>{{ chat.timestamp}}</p>-->
 											</div>
 										</div>
@@ -126,13 +126,14 @@
 
 			if(me['user_name'] == data.user['user_name']) {
               	data.user['first_name'] = 'Me';
+			  	data.user['last_name'] = '';
 				class_name = 'out';
 				profile_image = '{{ user.profile.profile_picture.url }}';
 
             }
 
 			var chat_list = document.querySelector('#chat-list-id');
-			var chat = "<li class=\""+class_name+"\"><div class=\"chat-img\"><img alt=\"Avtar\" src=\""+profile_image+"\"></div><div class=\"chat-body\"><div class=\"chat-message\"><h5>"+data.user['first_name']+"</h5><p>"+data.message+"</p></div></div></li>";
+			var chat = "<li class=\""+class_name+"\"><div class=\"chat-img\"><img alt=\"Avtar\" src=\""+profile_image+"\"></div><div class=\"chat-body\"><div class=\"chat-message\"><h5>"+data.user['first_name']+" "+data.user['last_name']+"</h5><p>"+data.message+"</p></div></div></li>";
 
 			chat_list.innerHTML += chat;
         }

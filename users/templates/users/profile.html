@@ -14,8 +14,8 @@
     <div class="profile-nav-info">
       <h3 class="user-name">{{profiles.first_name}} {{profiles.last_name}}</h3>
       <div class="address">
-        {% if profiles.comes_from %}
-          <p id="state" class="state"><i class="fa-solid fa-city" style="color: white;"></i> {{profiles.comes_from}}</p>
+        {% if profiles.city %}
+          <p id="state" class="state"><i class="fa-solid fa-city" style="color: white;"></i> {{profiles.city}}</p>
         {%endif%}
 <!--        <span id="country" class="country">{% if profiles.birth_date %}{{profiles.birth_date}}{% endif %}</span>-->
       </div>
@@ -52,21 +52,21 @@
         <div class="profile-btn">
           <a href="{% url 'chatroom' profiles.user.user_name%}" type="button" class="chatbtn" id="chatBtn"><i class="fa fa-comment" style="color: white;"></i> Chat</a>
 <!--          Start -->
-          {% if request.user.id != profiles.id and Friend_Request_sent_exists == False and Friend_Request_received_exists == False and is_friend == False %}
+          {% if request.user.id != profiles.id and friend_request_sent_exists == False and friend_request_received_exists == False and is_friend == False %}
             <form action="{% url 'send_friend_request' profiles.id%}" method="POST">
                 {% csrf_token %}
               <button type="submit" class="createbtn-green"><i class="fa fa-plus" style="color: white;"></i> Add to friend</button>
             </form>
-            {% elif Friend_Request_sent_exists == True %}
-                {% for req in Friend_Request_sent %}
+            {% elif friend_request_sent_exists == True %}
+                {% for req in friend_request_sent %}
                 <form action="{% url 'cancel_friend_request' req.id %}" method="POST">
                   {% csrf_token %}
 <!--                  <input type="hidden" name="profile_username" value="{{profiles.user.user_name}}">-->
                     <button type="submit" class="createbtn"> <i class="fa fa-user" style="color: white;"></i>Cancel request</button>
                   </form>
                 {%endfor%}
-            {% elif Friend_Request_received_exists == True %}
-              {% for req in Friend_Request_received %}
+            {% elif friend_request_received_exists == True %}
+              {% for req in friend_request_received %}
                 <form action="{% url 'accept_friend_request' req.id %}" method="POST">
                   {% csrf_token %}
 <!--                  <input type="hidden" name="profile_username" value="{{profiles.user.user_name}}">-->

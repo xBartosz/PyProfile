@@ -1,11 +1,11 @@
-from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from website.models import MyUser
 from django.db.models import Q
 from asgiref.sync import sync_to_async, async_to_sync
 import json
 from .models import Message, Thread
-from channels.layers import get_channel_layer
 from website.serializers import UserSerializer
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
@@ -55,14 +55,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         thread_obj = await sync_to_async(Thread.objects.get, thread_sensitive=True)((Q(user1=from_user) & Q(user2=to_user)) | (Q(user1=to_user) & Q(user2=from_user)))
 
-        message_instane = await sync_to_async(Message.objects.create, thread_sensitive=True)(messag_body=payload['message'], from_user=from_user, to_user=to_user, thread=thread_obj)
+        message_instance = await sync_to_async(Message.objects.create, thread_sensitive=True)(message_body=payload['message'], from_user=from_user, to_user=to_user, thread=thread_obj)
 
         await self.channel_layer.group_send(
             self.room_name,
             {
                 'type': 'chatroom_messages',
-                'message': message_instane.messag_body,
-                'user': message_instane.from_user
+                'message': message_instance.message_body,
+                'user': message_instance.from_user
             }
         )
 

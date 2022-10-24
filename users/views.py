@@ -7,14 +7,13 @@ from django.db.models import Value as V
 from django.db.models.functions import Concat
 from website.models import Post, MyUser
 from users.models import Profile
-from friends.models import Friend_Request
+from friends.models import FriendRequest
 from website.forms import ReplyForm
-
 
 
 def search_users(request):
     if request.method == "POST":
-        search = request.POST['search']  # input type from template
+        search = request.POST['search']
         users_results = Profile.objects.annotate(full_name=Concat('first_name', V(' '), 'last_name')). \
             filter(full_name__icontains=search)
         context = {'search': search, 'users_results': users_results}
@@ -43,7 +42,6 @@ def users_profile(request, username):
     profiles = Profile.objects.get(id=user_id)
     user_posts = len(Post.objects.filter(author=profiles.user))
 
-    # print(Profile.objects.get(id=user_id).values('first_name'))
     if profiles.mobile is None:
         profiles.mobile = "Unknown"
     elif profiles.mobile_visibility == "False":
@@ -56,37 +54,28 @@ def users_profile(request, username):
     if request.user.friends.filter(user_name=profiles.user.user_name).exists():
         is_friend = True
 
-    # print("Tak") if profiles.user.id in friend_list else print("Nie")
-    # print(friend_list)
-    #
-    # # print(x for x in request.user.friends.all())
-    # friend = False
-    # friend = True if profiles.user.email in friend_list else False
-    # print(friend)
+    friend_request_sent = FriendRequest.objects.filter(request_from_user=request.user, request_to_user=user_id)
+    friend_request_received = FriendRequest.objects.filter(request_from_user=user_id, request_to_user=request.user)
 
-    Friend_Request_sent = Friend_Request.objects.filter(request_from_user=request.user, request_to_user=user_id)
-    Friend_Request_received = Friend_Request.objects.filter(request_from_user=user_id, request_to_user=request.user)
+    friend_request_sent_exists = False
+    friend_request_received_exists = False
 
-    Friend_Request_sent_exists = False
-    Friend_Request_received_exists = False
-
-    if Friend_Request_sent.exists():
-        Friend_Request_sent_exists = True
-    elif Friend_Request_received.exists():
-        Friend_Request_received_exists = True
-
+    if friend_request_sent.exists():
+        friend_request_sent_exists = True
+    elif friend_request_received.exists():
+        friend_request_received_exists = True
 
     context = {'user_posts': user_posts, 'profiles': profiles,
-               'Friend_Request_sent_exists': Friend_Request_sent_exists,
-               'Friend_Request_received_exists': Friend_Request_received_exists,
-               'Friend_Request_received': Friend_Request_received,
-               'Friend_Request_sent': Friend_Request_sent, 'is_friend': is_friend}
+               'friend_request_sent_exists': friend_request_sent_exists,
+               'friend_request_received_exists': friend_request_received_exists,
+               'friend_request_received': friend_request_received,
+               'friend_request_sent': friend_request_sent, 'is_friend': is_friend}
     return render(request, 'users/profile.html', context)
 
 
 @login_required(login_url='login')
 def friend_request(request):
-    show_friend_request = Friend_Request.objects.filter(request_to_user=request.user)
+    show_friend_request = FriendRequest.objects.filter(request_to_user=request.user)
 
     context = {'show_friend_request': show_friend_request}
 
@@ -94,7 +83,6 @@ def friend_request(request):
 
 
 def friend_list(request, username):
-    # request.user.friends.filter(user_name=username)
     user_being_viewed = MyUser.objects.get(user_name=username)
     friends = user_being_viewed.friends.all().order_by('first_name')
     context = {'friends': friends, 'user_being_viewed': user_being_viewed}
@@ -112,9 +100,7 @@ def post_list(request, username):
             form_reply.instance.reply_author = MyUser.objects.get(id=request.user.id)
             form_reply.instance.post = Post.objects.get(id=get_id)
             form_reply.save()
-            # return HttpResponseRedirect(request.path_info)
             return redirect(request.META['HTTP_REFERER'])
     context = {'posts': posts, 'user_being_viewed': user_being_viewed}
 
     return render(request, 'users/post_list.html', context)
-

@@ -1,9 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django.utils.text import slugify
-from django.contrib.humanize.templatetags.humanize import naturaltime
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import post_save, post_delete
 from notifications.models import Notification
 
@@ -40,8 +36,6 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(email, user_name, password, first_name, last_name, **extra_fields)
 
 
-
-
 class MyUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True, max_length=254)
     user_name = models.CharField(max_length=50, unique=True)
@@ -57,26 +51,6 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['user_name', 'first_name', 'last_name']
-
-    #
-    # # In this method, check that the date of the last visit is not older than 15 minutes
-    # def is_online(self):
-    #     if self.last_online:
-    #         return (timezone.now() - self.last_online) < timezone.timedelta(minutes=15)
-    #     return False
-    #
-    #
-    # # If the user visited the site no more than 15 minutes ago,
-    # def get_online_info(self):
-    #     if self.is_online():
-    #         # then we return information that he is online
-    #         return _('Online')
-    #     if self.last_online:
-    #         # otherwise we write a message about the last visit
-    #         return _('Last visit {}').format(naturaltime(self.last_online))
-    #         # If you have only recently added information about a user visiting the site
-    #         # then for some users there may not be any information about the visit, we will return information that the last visit is unknown
-    #     return _('Unknown')
 
 
 class Post(models.Model):
@@ -114,11 +88,12 @@ class Post(models.Model):
         notify = Notification.objects.filter(post=post, sender=sender, notification_type="Post")
         notify.delete()
 
+
 post_save.connect(Post.user_created_post, sender=Post)
 post_delete.connect(Post.user_deleted_post, sender=Post)
 
 
-class Reply_for_post(models.Model):
+class ReplyForPost(models.Model):
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     reply_author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     reply_content = models.TextField(blank=False, null=False)
@@ -145,20 +120,13 @@ class Reply_for_post(models.Model):
         notify.delete()
 
 
-post_save.connect(Reply_for_post.user_comment_post, sender=Reply_for_post)
-post_delete.connect(Reply_for_post.user_deleted_comment, sender=Reply_for_post)
+post_save.connect(ReplyForPost.user_comment_post, sender=ReplyForPost)
+post_delete.connect(ReplyForPost.user_deleted_comment, sender=ReplyForPost)
 
 
 class Likes(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="reference_to_post")
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="user_like")
-
-    # likes = models.ManyToManyField(MyUser, related_name='posts', null=True, blank=True)
-
-    # def save(self, *args, **kwargs):
-    #     super(Post, self).save(*args, **kwargs)
-    # def total_likes(self):
-    #     return self.likes.count()
 
     def user_liked_post(sender, instance, *args, **kwargs):
         like = instance
@@ -188,7 +156,7 @@ post_save.connect(Likes.user_liked_post, sender=Likes)
 post_delete.connect(Likes.user_unliked_post, sender=Likes)
 
 
-class Report_post(models.Model):
+class ReportPost(models.Model):
     Report_post_reasons = [('Spam', 'Spam'),
                            ('Nudity', 'Nudity'),
                            ('Violence', 'Violence'),

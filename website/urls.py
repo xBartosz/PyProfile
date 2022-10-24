@@ -1,14 +1,11 @@
 from django.urls import path
-
-# from .controllers import PostsApiView
-from .views import login_user, RegisterFunction, index, delete_post, update_post, like_post, detail_view, Report_function, Ajax
+from .views import login_user, RegisterFunction, index, delete_post, update_post, like_post, detail_view, report_function, ajax
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
     path('', index, name='index'),
-
 
     path('login/', login_user, name='login'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
@@ -21,10 +18,10 @@ urlpatterns = [
 
     path('delete_post/<int:id>', delete_post, name='delete_post'),
     path('update_post/<int:id>', update_post, name='update_post'),
-    path('report_post/<int:id>', Report_function, name='report_post'),
+    path('report_post/<int:id>', report_function, name='report_post'),
     path('like/<int:id>', like_post, name='like_post'),
     path('detail_view/<int:pk>', detail_view, name='detail_view'),
-    path('ajax', Ajax, name='ajax'),
-    # path('like/<int:pk>', LikeView, name='like_post'),
-    # path('api/posts', PostsApiView.as_view()),
+
+    path('ajax', ajax, name='ajax'),
+
 ]
