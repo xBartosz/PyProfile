@@ -1,6 +1,6 @@
 # PyProfile
 
-Pyprofile is a web application written using Django. It allows users to create profiles, create posts, communicate with other users. You can also like or comment posts, search for friends and add them to your friend list.
+Pyprofile is a web application written using Django. It allows users to create profiles and posts, communicate with other users. You can also like or comment posts, search for friends and add them to your friend list.
 
 ## Setup
 The first thing to do is to clone the repository:
