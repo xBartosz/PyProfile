@@ -14,7 +14,7 @@ Create a virtual environment to install dependencies in and activate it:
 
 ```sh
 $ python -m venv env
-$ source env/bin/activate
+$ source env/Scripts/activate
 ```
 
 Then install the dependencies:
